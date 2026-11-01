@@ -1,0 +1,35 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Azure Functions local settings (may contain secrets)
+local.settings.json
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.example.tfvars
+crash.log
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Azurite local data
+__azurite_db_*.json
+__blobstorage__/
+__queuestorage__/
+
+# Node / misc
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc

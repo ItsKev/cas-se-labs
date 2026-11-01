@@ -1,0 +1,26 @@
+{
+  "name": "cas-se cloud labs",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/terraform:1": {},
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/jlaundry/devcontainer-features/azure-functions-core-tools:1": {}
+  },
+  "forwardPorts": [8080, 10000],
+  "portsAttributes": {
+    "8080": { "label": "API + SPA", "onAutoForward": "openBrowser" },
+    "10000": { "label": "Azurite Blob", "onAutoForward": "silent" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "hashicorp.terraform",
+        "humao.rest-client",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh"
+}
