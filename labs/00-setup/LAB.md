@@ -224,11 +224,11 @@ Die eigene Kopie ist ein Stand zum Zeitpunkt der Erzeugung. Labs, die später im
 ```bash
 git remote add template https://github.com/marcoamhof/cas-se-labs.git   # nur beim ersten Mal
 git fetch template
-git checkout template/main -- labs/02-storage
-git commit -m "Lab 02 übernommen"
+git checkout template/main -- labs/01-storage
+git commit -m "Lab 01 übernommen"
 ```
 
-- `labs/02-storage` steht für den Ordner des jeweiligen Labs.
+- `labs/01-storage` steht für den Ordner des jeweiligen Labs.
 - Der Befehl holt nur diesen Ordner. Eigene Arbeit in anderen Ordnern bleibt unverändert.
 - Dateien im geholten Lab-Ordner werden überschrieben. Eigene Änderungen dort sind vorher zu committen.
 - `git remote add` meldet «remote template already exists», wenn der Eintrag schon besteht. Der Schritt entfällt dann.
