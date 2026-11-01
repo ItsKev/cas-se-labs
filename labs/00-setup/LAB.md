@@ -202,7 +202,7 @@ GitHub kopiert das Template in das eigene Konto, mit eigener Historie und ohne V
 
 **Ablauf**
 
-1. Link zum Kurs-Repo `cas-se-labs` öffnen (ILIAS, Mail).
+1. Das Kurs-Repo `https://github.com/marcoamhof/cas-se-labs` öffnen (Link in ILIAS und Mail).
 2. **Use this template → Create a new repository** wählen.
 3. Owner: eigenes Konto. Name: `cas-se-labs`. Sichtbarkeit: **Private**.
 4. **Create repository** bestätigen.
@@ -213,9 +213,25 @@ Das Repo `github.com/<name>/cas-se-labs` besteht (`<name>` ist der GitHub-Benutz
 
 **Was schiefgehen kann**
 
-- Der Knopf «Use this template» fehlt: Die Anmeldung fehlt, oder das Template ist nicht sichtbar. Eine kurze Mail klärt das.
+- Der Knopf «Use this template» fehlt: Die Anmeldung bei GitHub fehlt. Das Kurs-Repo ist öffentlich und ohne Anmeldung lesbar, die Schaltfläche erscheint erst nach der Anmeldung.
 - Der Name ist vergeben: Ein anderer Name genügt, zum Beispiel `cas-se-labs-26hs`.
 - Das Repo ist versehentlich öffentlich: Es enthält keine Geheimnisse, ein Schaden entsteht nicht. Schlüssel gehören trotzdem nie ins Repo, siehe Hinweise am Ende.
+
+**Spätere Labs übernehmen**
+
+Die eigene Kopie ist ein Stand zum Zeitpunkt der Erzeugung. Labs, die später im Kurs-Repo erscheinen, fehlen darin. Ein Lab wird mit drei Befehlen im eigenen Repo (Terminal im Dev Container) übernommen:
+
+```bash
+git remote add template https://github.com/marcoamhof/cas-se-labs.git   # nur beim ersten Mal
+git fetch template
+git checkout template/main -- labs/02-storage
+git commit -m "Lab 02 übernommen"
+```
+
+- `labs/02-storage` steht für den Ordner des jeweiligen Labs.
+- Der Befehl holt nur diesen Ordner. Eigene Arbeit in anderen Ordnern bleibt unverändert.
+- Dateien im geholten Lab-Ordner werden überschrieben. Eigene Änderungen dort sind vorher zu committen.
+- `git remote add` meldet «remote template already exists», wenn der Eintrag schon besteht. Der Schritt entfällt dann.
 
 ## Entwicklungsumgebung starten
 
