@@ -231,10 +231,10 @@ Der Fork zeigt den Stand zum Zeitpunkt der Erzeugung. Labs, die später im Kurs-
 4. Im Codespace oder Dev Container den neuen Stand holen:
 
    ```bash
-   git pull
+   git pull --no-rebase --no-edit
    ```
 
-Kollidieren eigene Änderungen mit dem Original, bietet GitHub an, einen Pull Request zur Lösung der Konflikte zu erstellen. Soll die eigene Arbeit unangetastet bleiben und nur der Ordner eines neuen Labs geholt werden, dient die Alternative mit vier Befehlen im Terminal des Dev Containers:
+Kollidieren eigene Änderungen mit dem Original, bietet GitHub an, einen Pull Request zur Lösung der Konflikte zu erstellen. Im Terminal meldet `git pull` in diesem Fall `CONFLICT` und nennt die betroffene Datei. `git merge --abort` stellt den vorherigen Stand wieder her, danach genügt die Alternative unten, die nur den Ordner des neuen Labs holt. Soll die eigene Arbeit unangetastet bleiben und nur der Ordner eines neuen Labs geholt werden, dient die Alternative mit vier Befehlen im Terminal des Dev Containers:
 
 ```bash
 git remote add upstream https://github.com/marcoamhof/cas-se-labs.git   # nur beim ersten Mal
@@ -244,6 +244,7 @@ git commit -m "Lab 01 übernommen"
 ```
 
 - `labs/01-storage` steht für den Ordner des jeweiligen Labs.
+- Der einfache Befehl `git pull` bricht mit «Need to specify how to reconcile divergent branches» ab, wenn eigene Commits und neue Commits auf GitHub nebeneinander bestehen. `--no-rebase` legt den Zusammenschluss per Merge fest, `--no-edit` übernimmt die vorgeschlagene Merge-Nachricht ohne Editor.
 - `origin` zeigt auf den eigenen Fork, `upstream` auf das Kurs-Repo.
 - Der Befehl holt nur diesen Ordner. Eigene Arbeit in anderen Ordnern bleibt unverändert.
 - Dateien im geholten Lab-Ordner werden überschrieben. Eigene Änderungen dort sind vorher zu committen.
