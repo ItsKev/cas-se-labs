@@ -23,7 +23,7 @@
   <text x="46" y="138" font-size="18" font-weight="700" fill="#5f5f5a">Eigenes Gerät</text>
   <text x="356" y="138" font-size="18" font-weight="700" fill="#5f5f5a">GitHub</text>
   <text x="726" y="138" font-size="18" font-weight="700" fill="#5f5f5a">Dev Container</text>
-  <text x="1216" y="138" font-size="18" font-weight="700" fill="#5f5f5a">Azure (Switzerland North)</text>
+  <text x="1216" y="138" font-size="18" font-weight="700" fill="#5f5f5a">Azure</text>
 
   <!-- Lane 1: Browser -->
   <rect x="50" y="380" width="200" height="80" rx="12" fill="#ffffff" stroke="#b5b5ad" stroke-width="2"/>

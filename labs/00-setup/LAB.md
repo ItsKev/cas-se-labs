@@ -50,7 +50,7 @@ Das Ende des Labs enthält die Definition of Done. Die detaillierte Einrichtung 
 |---|---|
 | Persönliches GitHub-Konto | bereits eingerichtet |
 | Azure-Abo | bereits eingerichtet, Rolle Owner, angelegt mit einem privaten Microsoft-Konto (nicht mit der HSLU-Adresse) |
-| Gerät und Browser | Windows, macOS oder Linux mit aktuellem Browser. Für die Varianten A und B ist sonst nichts zu installieren |
+| Gerät und Browser | Windows, macOS oder Linux mit aktuellem Browser. Für Variante A ist sonst nichts zu installieren, für Variante B nur VS Code mit der Erweiterung «GitHub Codespaces» |
 | Papier oder Zeichenprogramm | für den Entwurf |
 
 Das private Konto ergibt einen eigenen Mandanten (Tenant) mit der Rolle Owner. Ein Testabo bietet 200 USD Guthaben für 30 Tage. Zwischen Modul 1 und Modul 2 liegen 34 Tage, deshalb ist vor Modul 2 die Umstellung auf Pay-as-you-go nötig (Stand 01.11.2026, [Azure free account FAQ](https://azure.microsoft.com/pricing/free-trial-faq/)).
@@ -64,6 +64,7 @@ Das private Konto ergibt einen eigenen Mandanten (Tenant) mit der Rolle Owner. E
 - **Mandant (Tenant):** Verzeichnis in Azure für Konten und Rollen. Das Abo gehört zu einem Mandanten.
 - **Terraform:** legt Cloud-Ressourcen anhand von Code-Dateien an und entfernt sie wieder (Infrastructure as Code).
 - **Deployment:** Anwendung oder Infrastruktur in der Cloud bereitstellen oder aktualisieren.
+- **Code-along:** Schritte der Demo auf dem eigenen Rechner gleichzeitig nachvollziehen.
 
 ---
 
@@ -147,7 +148,7 @@ Format:
 
 Umfang: Nicht alle Fragen müssen beantwortet sein, wenige Komponenten und offene Fragen genügen. Mit mehr Erfahrung kommen Varianten mit Abwägungen dazu: Kosten, Betrieb, Abhängigkeit vom Anbieter, Skalierung, Fehlerbehandlung.
 
-Verwendung: Der Entwurf wird nicht bewertet. Im Einstieg von Modul 1 werden zwei bis drei Entwürfe kurz gezeigt, am Ende von Modul 2 folgt der Vergleich mit der umgesetzten Lösung. Die Bereitstellung des Entwurfs steht im Begleitmail.
+Verwendung: Der Entwurf wird nicht bewertet. Im Einstieg von Modul 1 werden zwei bis drei Entwürfe kurz gezeigt, am Ende von Modul 2 folgt der Vergleich mit der umgesetzten Lösung. Eine Abgabe ist nicht nötig. Für die Besprechung im Einstieg genügt es, den Entwurf zur Hand zu haben.
 
 ## Die beiden Unterrichtstage
 
@@ -161,7 +162,7 @@ Jedes Lab hat einen Start- und einen Lösungsstand, damit der Einstieg bei jedem
 
 Fünf Schritte, Details in den folgenden Abschnitten und im Anhang.
 
-1. Das Kurs-Repo `cas-se-labs` über **Fork** im eigenen Konto forken (der Fork ist öffentlich).
+1. Das Kurs-Repo `cas-se-labs` im eigenen Konto forken (der Fork ist öffentlich).
 2. Umgebung öffnen: Codespace auf `main`, oder lokal **Reopen in Container**.
 3. `bash labs/00-setup/check.sh` ausführen, Ergebnis «Local environment is ready.».
 4. `az login --use-device-code`, danach `export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)`.
@@ -215,7 +216,7 @@ Das Repo `github.com/<name>/cas-se-labs` besteht (`<name>` ist der GitHub-Benutz
 
 **Was schiefgehen kann**
 
-- Der Knopf **Fork** fehlt: Die Anmeldung bei GitHub fehlt. Das Kurs-Repo ist ohne Anmeldung lesbar, die Schaltfläche erscheint erst nach der Anmeldung.
+- Der Knopf **Fork** lässt sich nicht bedienen: Die Anmeldung bei GitHub fehlt. Das Kurs-Repo ist ohne Anmeldung lesbar, das Forken verlangt sie.
 - Es besteht bereits ein Fork des Kurs-Repos im eigenen Konto, etwa aus einer früheren Durchführung: GitHub verweist auf den vorhandenen Fork. Dieser genügt, **Sync fork** bringt ihn auf den aktuellen Stand.
 - Der Fork ist öffentlich: Ein Fork eines öffentlichen Repos ist öffentlich, die Sichtbarkeit lässt sich nicht ändern. Alles, was committet wird, ist für alle lesbar. Schlüssel, Connection Strings und Tokens gehören nie ins Repo, siehe Hinweise am Ende.
 - GitHub Actions laufen im Fork zunächst nicht. Der Tab **Actions** des Forks bietet an, die Workflows zu aktivieren. Bis Modul 2 sind sie nicht nötig.
@@ -234,7 +235,7 @@ Der Fork zeigt den Stand zum Zeitpunkt der Erzeugung. Labs, die später im Kurs-
    git pull --no-rebase --no-edit
    ```
 
-Kollidieren eigene Änderungen mit dem Original, bietet GitHub an, einen Pull Request zur Lösung der Konflikte zu erstellen. Im Terminal meldet `git pull` in diesem Fall `CONFLICT` und nennt die betroffene Datei. `git merge --abort` stellt den vorherigen Stand wieder her, danach genügt die Alternative unten, die nur den Ordner des neuen Labs holt. Soll die eigene Arbeit unangetastet bleiben und nur der Ordner eines neuen Labs geholt werden, dient die Alternative mit vier Befehlen im Terminal des Dev Containers:
+Kollidieren eigene Änderungen mit dem Original, bietet GitHub an, einen Pull Request zur Lösung der Konflikte zu erstellen. Im Terminal meldet `git pull` in diesem Fall `CONFLICT` und nennt die betroffene Datei. `git merge --abort` stellt den vorherigen Stand wieder her. Die eigene Arbeit bleibt unangetastet, wenn nur der Ordner des neuen Labs geholt wird. Das leisten diese Befehle im Terminal des Dev Containers:
 
 ```bash
 git remote add upstream https://github.com/marcoamhof/cas-se-labs.git   # nur beim ersten Mal
@@ -301,7 +302,7 @@ Der Azure-Block darunter zeigt noch `[todo]`, die Anmeldung folgt im nächsten A
 
 **Was schiefgehen kann**
 
-- `[FAIL] docker daemon`: Die Umgebung wurde ohne Docker-Daemon gestartet. **F1 → Rebuild Container** behebt das.
+- `[FAIL] docker`: Die Umgebung wurde ohne Docker-Daemon gestartet. **F1 → Rebuild Container** behebt das.
 - `[FAIL] docker-run`: Das Netzwerk lässt den Download des Testimages nicht zu, etwa in einem Firmen- oder Hotel-WLAN oder hinter einem Proxy. Ein anderes Netz hilft. Im Codespace kommt das selten vor.
 - `[FAIL] dotnet-run` oder ein anderes Werkzeug: Der Aufbau war unvollständig. Meist hilft **Rebuild Container**, sonst eine Mail mit der Fehlerzeile.
 
@@ -351,11 +352,11 @@ Das Budget erscheint in der Liste.
 
 - Nach jedem Modul wird alles entfernt, was angelegt wurde. Der Befehl dafür, `terraform destroy`, wird im Unterricht gezeigt. Fixkosten laufen bei Leerlauf weiter, bis die Ressourcen weg sind.
 - Codespace stoppen, wenn nicht gearbeitet wird: **F1 → Codespaces: Stop Current Codespace**. Ungenutzt stoppt er nach 30 Minuten von selbst und bleibt bestehen.
-- Nach Abschluss des Labs den Codespace löschen: github.com/codespaces → Menü des Codespace → **Delete**. Der Code bleibt im Repo.
+- Nach Abschluss des Labs den Codespace löschen: github.com/codespaces → Menü des Codespace → **Delete**. Vor dem Löschen sind Änderungen zu committen und zu pushen, sonst gehen sie verloren. Gepushter Code bleibt im Fork.
 
 ## Definition of Done
 
-- [ ] Der Architektur-Entwurf (eine Seite) liegt vor, mit Annahmen und offenen Fragen. Er deckt die Plattform und beide Szenarien ab.
+- [ ] Der Architektur-Entwurf (eine Seite) liegt vor, mit Annahmen und offenen Fragen. Er deckt mindestens Ausbaustufe 1 ab. Ausbaustufe 2 und die Unterschiede der beiden Szenarien kommen hinzu, soweit sie bekannt sind.
 - [ ] Der Entwurf nennt den Standort der Daten und die Faktoren, die zur Wahl geführt haben.
 - [ ] Der Fork `cas-se-labs` besteht im eigenen Konto.
 - [ ] Die Entwicklungsumgebung startet (Variante A, B oder C).
@@ -363,7 +364,7 @@ Das Budget erscheint in der Liste.
 - [ ] `az login` ist erfolgt, `ARM_SUBSCRIPTION_ID` ist gesetzt, der Azure-Block von `check.sh` zeigt `[ok]`.
 - [ ] Ein Budget-Alert auf Abo-Ebene besteht.
 
-Bei Problemen genügt eine Mail mit der gewählten Variante (A, B oder C), dem Abschnitt und der letzten Fehlermeldung, am besten vor dem Kurstag.
+Bei Problemen genügt eine Mail mit der gewählten Variante (A, B oder C), dem Abschnitt und der letzten Fehlermeldung, vor dem Kurstag.
 
 ## Nächste Schritte
 
@@ -403,7 +404,7 @@ VS Code läuft im Browser, der Explorer zeigt die Ordner `labs/` und `.devcontai
 **Was schiefgehen kann**
 
 - Der Aufbau bricht ab: **F1 → Codespaces: View Creation Log** zeigt die Ursache in der letzten Zeile. Oft genügt **F1 → Rebuild Container**.
-- Meldung zum Kontingent: Persönliche Konten haben ein monatliches Gratis-Kontingent, einsehbar unter github.com/settings/billing. Stoppen des Codespace nach jeder Sitzung schont es.
+- Meldung zum Kontingent: Persönliche Konten haben ein monatliches Gratis-Kontingent, einsehbar unter github.com/settings/billing. Stoppen des Codespace nach jeder Sitzung verringert den Verbrauch.
 - Der Browser blockiert Fenster oder Cookies von GitHub: Ausnahme für `github.com` und `github.dev` zulassen oder ein anderes Browserprofil verwenden.
 
 ### Anhang B: Variante B, Codespace in VS Code
