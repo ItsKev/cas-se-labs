@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dokumentenplattform</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; color: #222; }
+    h1 { font-size: 1.4rem; }
+    #drop { border: 2px dashed #888; border-radius: 8px; padding: 2rem; text-align: center; color: #555; cursor: pointer; }
+    #drop.over { background: #eef5ff; border-color: #2a6fdb; }
+    #message { min-height: 1.5rem; margin: .75rem 0; }
+    #message.error { color: #b00020; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid #ddd; }
+    .status { background: #e8f0fe; border-radius: 4px; padding: 0 .4rem; font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <h1>Dokumentenplattform</h1>
+
+  <div id="drop">Dateien hierher ziehen oder klicken (PDF, DOCX, JPG, PNG, max. 10 MB)</div>
+  <input id="file" type="file" hidden multiple accept=".pdf,.docx,.jpg,.jpeg,.png">
+  <div id="message"></div>
+
+  <table>
+    <thead><tr><th>Name</th><th>Grösse</th><th>Hochgeladen</th><th>Status</th></tr></thead>
+    <tbody id="list"></tbody>
+  </table>
+
+  <script>
+    const drop = document.getElementById('drop');
+    const fileInput = document.getElementById('file');
+    const message = document.getElementById('message');
+    const list = document.getElementById('list');
+
+    function show(text, isError) {
+      message.textContent = text;
+      message.className = isError ? 'error' : '';
+    }
+
+    async function loadList() {
+      const response = await fetch('/api/documents');
+      if (!response.ok) { show('Liste konnte nicht geladen werden (' + response.status + ').', true); return; }
+      const documents = await response.json();
+      list.replaceChildren(...documents.map(row));
+    }
+
+    function row(doc) {
+      const tr = document.createElement('tr');
+      const name = document.createElement('td');
+      const link = document.createElement('a');
+      link.href = '/api/documents/' + doc.id + '/content';
+      link.textContent = doc.fileName;
+      name.append(link);
+      const size = document.createElement('td');
+      size.textContent = (doc.size / 1024).toFixed(0) + ' KB';
+      const date = document.createElement('td');
+      date.textContent = doc.uploadedAt ? new Date(doc.uploadedAt).toLocaleString('de-CH') : '';
+      const status = document.createElement('td');
+      const badge = document.createElement('span');
+      badge.className = 'status';
+      badge.textContent = doc.status;
+      status.append(badge);
+      tr.append(name, size, date, status);
+      return tr;
+    }
+
+    async function upload(files) {
+      for (const file of files) {
+        const form = new FormData();
+        form.append('file', file);
+        const response = await fetch('/api/documents', { method: 'POST', body: form });
+        if (response.ok) {
+          show(file.name + ' hochgeladen.');
+        } else {
+          const body = await response.json().catch(() => ({}));
+          show(file.name + ': ' + (body.error || 'Fehler ' + response.status), true);
+        }
+      }
+      await loadList();
+    }
+
+    drop.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => { upload(fileInput.files); fileInput.value = ''; });
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); upload(e.dataTransfer.files); });
+
+    loadList();
+  </script>
+</body>
+</html>

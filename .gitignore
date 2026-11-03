@@ -21,6 +21,7 @@ crash.log
 !.env.example
 
 # Azurite local data
+.azurite/
 __azurite_db_*.json
 __blobstorage__/
 __queuestorage__/

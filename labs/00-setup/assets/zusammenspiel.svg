@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1570 800" width="1570" height="800" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
   <title id="t">Zusammenspiel von Gerät, GitHub, Dev Container und Azure</title>
-  <desc id="d">Das Kurs-Template wird zum eigenen Repo. Das Repo wird mit dem Dev Container synchronisiert, in dem docker compose lokale Test-Container startet. Vom Dev Container aus legt Terraform die Cloud-Ressourcen in Azure an. Der Browser bedient den Editor, die lokale Anwendung und die Anwendung in Azure.</desc>
+  <desc id="d">Das Kurs-Repo wird per Fork zum eigenen Repo. Das Repo wird mit dem Dev Container synchronisiert, in dem docker compose lokale Test-Container startet. Vom Dev Container aus legt Terraform die Cloud-Ressourcen in Azure an. Der Browser bedient den Editor, die lokale Anwendung und die Anwendung in Azure.</desc>
   <defs>
     <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#6b6b66"/>
@@ -30,18 +30,18 @@
   <text x="150" y="414" font-size="19" font-weight="700" text-anchor="middle" fill="#1f1f1d">Browser</text>
   <text x="150" y="440" font-size="16" text-anchor="middle" fill="#5f5f5a">oder VS Code Desktop</text>
 
-  <!-- Lane 2: Template and own repo -->
+  <!-- Lane 2: course repo and own fork -->
   <rect x="360" y="170" width="240" height="80" rx="12" fill="#ffffff" stroke="#b5b5ad" stroke-width="2"/>
-  <text x="480" y="204" font-size="19" font-weight="700" text-anchor="middle" fill="#1f1f1d">Kurs-Template</text>
-  <text x="480" y="230" font-size="16" text-anchor="middle" fill="#5f5f5a">cas-se-labs (HSLU)</text>
+  <text x="480" y="204" font-size="19" font-weight="700" text-anchor="middle" fill="#1f1f1d">Kurs-Repo</text>
+  <text x="480" y="230" font-size="16" text-anchor="middle" fill="#5f5f5a">marcoamhof/cas-se-labs</text>
 
   <rect x="360" y="380" width="240" height="80" rx="12" fill="#dbe7f5" stroke="#2a6fdb" stroke-width="2.5"/>
-  <text x="480" y="414" font-size="19" font-weight="700" text-anchor="middle" fill="#1f1f1d">Eigenes Repo</text>
-  <text x="480" y="440" font-size="16" text-anchor="middle" fill="#5f5f5a">privat, aus dem Template</text>
+  <text x="480" y="414" font-size="19" font-weight="700" text-anchor="middle" fill="#1f1f1d">Eigener Fork</text>
+  <text x="480" y="440" font-size="16" text-anchor="middle" fill="#5f5f5a">öffentlich, bleibt verbunden</text>
 
   <line x1="480" y1="250" x2="480" y2="378" stroke="#6b6b66" stroke-width="2" marker-end="url(#g)"/>
-  <text x="494" y="318" font-size="16" fill="#5f5f5a">Use this</text>
-  <text x="494" y="338" font-size="16" fill="#5f5f5a">template</text>
+  <text x="494" y="318" font-size="16" fill="#5f5f5a">Fork,</text>
+  <text x="494" y="338" font-size="16" fill="#5f5f5a">Sync fork</text>
 
   <!-- Lane 3: tools and compose -->
   <rect x="730" y="165" width="340" height="95" rx="12" fill="#ffffff" stroke="#b5b5ad" stroke-width="2"/>

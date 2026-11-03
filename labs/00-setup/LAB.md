@@ -58,7 +58,7 @@ Das private Konto ergibt einen eigenen Mandanten (Tenant) mit der Rolle Owner. E
 ## Begriffe
 
 - **Repo:** Git-Repository auf GitHub, der Ordner mit Code und Änderungshistorie.
-- **Template:** Repo, das als Vorlage dient. **Use this template** erzeugt eine eigene, unabhängige Kopie.
+- **Fork:** eigene Kopie eines Repos im eigenen GitHub-Konto, die mit dem Original verbunden bleibt. **Sync fork** holt spätere Änderungen des Originals in die Kopie.
 - **Dev Container:** Entwicklungsumgebung als Container, beschrieben in `devcontainer.json` und damit für alle identisch.
 - **Codespace:** Dev Container, der bei GitHub in der Cloud läuft, im Browser oder in VS Code.
 - **Mandant (Tenant):** Verzeichnis in Azure für Konten und Rollen. Das Abo gehört zu einem Mandanten.
@@ -161,7 +161,7 @@ Jedes Lab hat einen Start- und einen Lösungsstand, damit der Einstieg bei jedem
 
 Fünf Schritte, Details in den folgenden Abschnitten und im Anhang.
 
-1. Repo `cas-se-labs` über **Use this template** im eigenen Konto erzeugen, privat.
+1. Das Kurs-Repo `cas-se-labs` über **Fork** im eigenen Konto forken (der Fork ist öffentlich).
 2. Umgebung öffnen: Codespace auf `main`, oder lokal **Reopen in Container**.
 3. `bash labs/00-setup/check.sh` ausführen, Ergebnis «Local environment is ready.».
 4. `az login --use-device-code`, danach `export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)`.
@@ -172,7 +172,7 @@ Fünf Schritte, Details in den folgenden Abschnitten und im Anhang.
 ![Zusammenspiel von Gerät, GitHub, Dev Container und Azure](assets/zusammenspiel.svg)
 
 - Eigenes Gerät: Browser oder VS Code, mehr nicht.
-- GitHub: Kurs-Template und eigene Kopie, in der gearbeitet wird.
+- GitHub: Kurs-Repo und eigener Fork, in dem gearbeitet wird.
 - Dev Container: Linux-Umgebung mit .NET, Terraform, Azure CLI und Docker.
 - Docker Compose im Dev Container: lokale Test-Container mit der Anwendung und Ersatz für Cloud-Dienste, damit Tests ohne Azure-Konto möglich sind.
 - Azure: nur, was Terraform anlegt.
@@ -186,7 +186,7 @@ Die Umgebung ist in einer einzigen Datei beschrieben (`.devcontainer/devcontaine
 | | Variante A: Codespace im Browser | Variante B: Codespace in VS Code | Variante C: lokaler Dev Container |
 |---|---|---|---|
 | Läuft auf | GitHub-Cloud | GitHub-Cloud | eigenem Rechner |
-| Zu installieren | nichts | VS Code, Erweiterung «GitHub Codespaces» | Docker, Git, VS Code, Erweiterung «Dev Containers» |
+| Zu installieren | nichts | VS Code, Erweiterung «GitHub Codespaces» | Docker (Docker Desktop oder Docker Engine), Git, VS Code, Erweiterung «Dev Containers» |
 | Kosten | Gratis-Kontingent von GitHub, danach kostenpflichtig | wie A | keine |
 | Internet | dauernd | dauernd | nur für Downloads und Azure |
 | Unterstützung im Kurs | voll | voll | ohne Gewähr |
@@ -194,44 +194,60 @@ Die Umgebung ist in einer einzigen Datei beschrieben (`.devcontainer/devcontaine
 
 Alle drei laufen unter Windows, macOS und Linux. Bei A und B ist das Betriebssystem unerheblich, weil der Codespace ein Linux-Rechner in der Cloud ist, auch auf einem Apple-Silicon-Mac. Standard ist Variante A.
 
+Variante C setzt eine Container-Engine voraus. Ein Dev Container ist ein Container, ohne Docker lässt er sich nicht starten. Das ist die häufigste Fehlerquelle dieser Variante (Docker nicht gestartet, WSL 2 fehlt, Virtualisierung gesperrt, Firmenrichtlinie). Läuft Docker nicht, bleibt der Wechsel zu Variante A oder B.
+
 ---
 
-## Eigenes Repo aus dem Template erzeugen
+## Eigenes Repo durch Fork erzeugen
 
-GitHub kopiert das Template in das eigene Konto, mit eigener Historie und ohne Verbindung zum Original. Dort entsteht die ganze Arbeit der beiden Module.
+Ein Fork ist eine eigene Kopie des Kurs-Repos im eigenen GitHub-Konto. Er bleibt mit dem Original verbunden. Dort entsteht die ganze Arbeit der beiden Module, und spätere Labs holt **Sync fork** nach.
 
 **Ablauf**
 
 1. Das Kurs-Repo `https://github.com/marcoamhof/cas-se-labs` öffnen (Link in ILIAS und Mail).
-2. **Use this template → Create a new repository** wählen.
-3. Owner: eigenes Konto. Name: `cas-se-labs`. Sichtbarkeit: **Private**.
-4. **Create repository** bestätigen.
+2. Oben rechts **Fork → Create a new fork** wählen.
+3. Owner: eigenes Konto. Repository name: `cas-se-labs` beibehalten.
+4. **Create fork** bestätigen.
 
 **Erwartetes Ergebnis**
 
-Das Repo `github.com/<name>/cas-se-labs` besteht (`<name>` ist der GitHub-Benutzername) und enthält die Ordner `labs/` und `.devcontainer/`. Unter dem Repo-Namen steht «generated from …».
+Das Repo `github.com/<name>/cas-se-labs` besteht (`<name>` ist der GitHub-Benutzername) und enthält die Ordner `labs/` und `.devcontainer/`. Unter dem Repo-Namen steht «forked from marcoamhof/cas-se-labs». Der Fork ist öffentlich.
 
 **Was schiefgehen kann**
 
-- Der Knopf «Use this template» fehlt: Die Anmeldung bei GitHub fehlt. Das Kurs-Repo ist öffentlich und ohne Anmeldung lesbar, die Schaltfläche erscheint erst nach der Anmeldung.
-- Der Name ist vergeben: Ein anderer Name genügt, zum Beispiel `cas-se-labs-26hs`.
-- Das Repo ist versehentlich öffentlich: Es enthält keine Geheimnisse, ein Schaden entsteht nicht. Schlüssel gehören trotzdem nie ins Repo, siehe Hinweise am Ende.
+- Der Knopf **Fork** fehlt: Die Anmeldung bei GitHub fehlt. Das Kurs-Repo ist ohne Anmeldung lesbar, die Schaltfläche erscheint erst nach der Anmeldung.
+- Es besteht bereits ein Fork des Kurs-Repos im eigenen Konto, etwa aus einer früheren Durchführung: GitHub verweist auf den vorhandenen Fork. Dieser genügt, **Sync fork** bringt ihn auf den aktuellen Stand.
+- Der Fork ist öffentlich: Ein Fork eines öffentlichen Repos ist öffentlich, die Sichtbarkeit lässt sich nicht ändern. Alles, was committet wird, ist für alle lesbar. Schlüssel, Connection Strings und Tokens gehören nie ins Repo, siehe Hinweise am Ende.
+- GitHub Actions laufen im Fork zunächst nicht. Der Tab **Actions** des Forks bietet an, die Workflows zu aktivieren. Bis Modul 2 sind sie nicht nötig.
+- Pull Requests aus dem Fork schlagen als Ziel das Original vor. In Modul 2 ist beim Erstellen als Basis-Repository der eigene Fork zu wählen, sonst landet der Pull Request im Kurs-Repo.
 
 **Spätere Labs übernehmen**
 
-Die eigene Kopie ist ein Stand zum Zeitpunkt der Erzeugung. Labs, die später im Kurs-Repo erscheinen, fehlen darin. Ein Lab wird mit drei Befehlen im eigenen Repo (Terminal im Dev Container) übernommen:
+Der Fork zeigt den Stand zum Zeitpunkt der Erzeugung. Labs, die später im Kurs-Repo erscheinen, holt **Sync fork** nach:
+
+1. Eigene Änderungen committen und pushen.
+2. Auf GitHub die Hauptseite des eigenen Forks öffnen.
+3. Oberhalb der Dateiliste **Sync fork** wählen und **Update branch** bestätigen.
+4. Im Codespace oder Dev Container den neuen Stand holen:
+
+   ```bash
+   git pull
+   ```
+
+Kollidieren eigene Änderungen mit dem Original, bietet GitHub an, einen Pull Request zur Lösung der Konflikte zu erstellen. Soll die eigene Arbeit unangetastet bleiben und nur der Ordner eines neuen Labs geholt werden, dient die Alternative mit vier Befehlen im Terminal des Dev Containers:
 
 ```bash
-git remote add template https://github.com/marcoamhof/cas-se-labs.git   # nur beim ersten Mal
-git fetch template
-git checkout template/main -- labs/01-storage
+git remote add upstream https://github.com/marcoamhof/cas-se-labs.git   # nur beim ersten Mal
+git fetch upstream
+git checkout upstream/main -- labs/01-storage
 git commit -m "Lab 01 übernommen"
 ```
 
 - `labs/01-storage` steht für den Ordner des jeweiligen Labs.
+- `origin` zeigt auf den eigenen Fork, `upstream` auf das Kurs-Repo.
 - Der Befehl holt nur diesen Ordner. Eigene Arbeit in anderen Ordnern bleibt unverändert.
 - Dateien im geholten Lab-Ordner werden überschrieben. Eigene Änderungen dort sind vorher zu committen.
-- `git remote add` meldet «remote template already exists», wenn der Eintrag schon besteht. Der Schritt entfällt dann.
+- `git remote add` meldet «remote upstream already exists», wenn der Eintrag schon besteht. Der Schritt entfällt dann.
 
 ## Entwicklungsumgebung starten
 
@@ -340,7 +356,7 @@ Das Budget erscheint in der Liste.
 
 - [ ] Der Architektur-Entwurf (eine Seite) liegt vor, mit Annahmen und offenen Fragen. Er deckt die Plattform und beide Szenarien ab.
 - [ ] Der Entwurf nennt den Standort der Daten und die Faktoren, die zur Wahl geführt haben.
-- [ ] Das Repo `cas-se-labs` besteht im eigenen Konto mit Sichtbarkeit Private.
+- [ ] Der Fork `cas-se-labs` besteht im eigenen Konto.
 - [ ] Die Entwicklungsumgebung startet (Variante A, B oder C).
 - [ ] `bash labs/00-setup/check.sh` meldet «Local environment is ready.».
 - [ ] `az login` ist erfolgt, `ARM_SUBSCRIPTION_ID` ist gesetzt, der Azure-Block von `check.sh` zeigt `[ok]`.
@@ -354,7 +370,7 @@ Modul 1 beginnt mit dem Einstieg: kurze Besprechung der Entwürfe, danach Umsetz
 
 ## Hinweise
 
-- Zugangsdaten, API-Schlüssel, `*.tfstate`, `*.tfvars` und `local.settings.json` gehören nie in Git. Die `.gitignore` fängt das meiste ab, ersetzt aber nicht die Aufmerksamkeit.
+- Zugangsdaten, API-Schlüssel, `*.tfstate`, `*.tfvars` und `local.settings.json` gehören nie in Git. Die `.gitignore` fängt das meiste ab, ersetzt aber nicht die Aufmerksamkeit. Der Fork ist öffentlich, jede Datei darin ist für alle lesbar.
 - Sicherheit steht in diesen Modulen nicht im Mittelpunkt. Die Plattform verzichtet auf Benutzeranmeldung und abgeschottete Netzwerke, eine Vereinfachung für den Kurs. Wo das eine Rolle spielt, weisen die Labs darauf hin. Für den Betrieb in der Praxis gelten andere Regeln, dazu besteht das Modul «Application Security».
 - Regionen, Preise und Modellverfügbarkeit ändern sich. Alle Zahlen in diesem Lab haben den Stand 01.11.2026.
 
@@ -362,7 +378,7 @@ Modul 1 beginnt mit dem Einstieg: kurze Besprechung der Entwürfe, danach Umsetz
 
 ## Anhang: Entwicklungsumgebung einrichten
 
-Voraussetzung für alle Varianten ist das Repo aus dem Abschnitt «Eigenes Repo aus dem Template erzeugen». Alle drei Varianten starten denselben Dev Container aus `.devcontainer/devcontainer.json`.
+Voraussetzung für alle Varianten ist der Fork aus dem Abschnitt «Eigenes Repo durch Fork erzeugen». Alle drei Varianten starten denselben Dev Container aus `.devcontainer/devcontainer.json`.
 
 ### Anhang A: Variante A, Codespace im Browser
 
@@ -413,7 +429,7 @@ VS Code läuft auf dem eigenen Gerät, links unten steht «Codespaces: …». Di
 
 ### Anhang C: Variante C, lokaler Dev Container
 
-Voraussetzungen: einige GB freier Speicherplatz, Recht zum Installieren von Software, Docker-Lizenzbedingungen geprüft (Docker Desktop ist für grössere Firmen kostenpflichtig, die Firmenregeln gelten). Getestet ist der Aufbau des Dev Containers auf x86-64. Für Apple Silicon (arm64) bieten alle Bestandteile arm64-Fassungen: die Basis-Images (.NET, Azurite) und die Installation von Docker, Terraform, Azure CLI und Functions Core Tools. Ein vollständiger Aufbau auf einem Apple-Silicon-Mac wurde nicht durchgeführt.
+Voraussetzungen: eine funktionierende Container-Engine (Docker Desktop oder Docker Engine, ohne sie startet der Dev Container nicht), einige GB freier Speicherplatz, Recht zum Installieren von Software, Docker-Lizenzbedingungen geprüft (Docker Desktop ist für grössere Firmen kostenpflichtig, die Firmenregeln gelten). Getestet ist der Aufbau des Dev Containers auf x86-64. Für Apple Silicon (arm64) bieten alle Bestandteile arm64-Fassungen: die Basis-Images (.NET, Azurite) und die Installation von Docker, Terraform, Azure CLI und Functions Core Tools. Ein vollständiger Aufbau auf einem Apple-Silicon-Mac wurde nicht durchgeführt.
 
 #### C.1 Windows
 
@@ -441,10 +457,30 @@ Voraussetzungen: einige GB freier Speicherplatz, Recht zum Installieren von Soft
 #### C.4 Dev Container öffnen (alle Systeme)
 
 1. Die Erweiterung **Dev Containers** installieren: Ansicht **Extensions**, nach «Dev Containers» suchen, **Install** wählen. Alternativ `code --install-extension ms-vscode-remote.remote-containers`.
-2. Das Repo klonen: `git clone https://github.com/<name>/cas-se-labs.git`. Bei einem privaten Repo verlangt Git die Anmeldung bei GitHub, sie läuft über den Browser.
+2. Das Repo klonen: `git clone https://github.com/<name>/cas-se-labs.git`. Das Klonen braucht keine Anmeldung. Das spätere Pushen verlangt die Anmeldung bei GitHub, sie läuft über den Browser.
 3. Den Ordner in VS Code öffnen: `code cas-se-labs`.
 4. VS Code erkennt `.devcontainer/devcontainer.json` und zeigt unten rechts den Hinweis «Folder contains a Dev Container configuration file. Reopen folder to develop in a container». **Reopen in Container** baut die Umgebung. Der erste Aufbau lädt mehrere hundert MB bis einige GB.
 5. Fehlt der Hinweis: **F1 → Dev Containers: Reopen in Container**.
+
+#### C.5 Docker starten und prüfen (vor C.4)
+
+Vor dem Öffnen des Dev Containers muss der Docker-Daemon laufen. Die Prüfung gelingt in jedem Terminal auf dem eigenen Rechner:
+
+1. `docker info` ausführen. Die Ausgabe enthält einen Abschnitt «Server» mit einer Versionsnummer. Dann läuft Docker, und es geht weiter mit C.4.
+2. Erscheint stattdessen `failed to connect to the docker API` (Windows) oder `Cannot connect to the Docker daemon` (macOS, Linux), läuft der Daemon nicht. Docker starten:
+   - Windows (PowerShell): `Start-Process "C:\Program Files\Docker\Docker\Docker Desktop.exe"`
+   - macOS: `open -a Docker`
+   - Linux ohne Docker Desktop: `sudo systemctl start docker`
+3. Warten, bis der Daemon antwortet. Unter Windows (PowerShell):
+
+   ```powershell
+   while (-not (docker info 2>$null | Select-String "Server Version")) { Start-Sleep 3 }; "Docker läuft"
+   ```
+
+   Auf macOS und Linux genügt es, `docker info` zu wiederholen, bis «Server» erscheint.
+4. `docker run hello-world` ausführen. Der Test meldet «Hello from Docker!».
+
+Bleibt Docker Desktop auf «Starting» oder startet nicht: WSL 2 prüfen (`wsl --status`), Docker Desktop neu starten, den Rechner neu starten. Auf Firmenrechnern kann eine Richtlinie die Virtualisierung blockieren. Dann Variante A oder B verwenden.
 
 Der Hinweis erscheint nur lokal. Im Codespace ist die Umgebung bereits ein Dev Container. **Don't Show Again** blendet den Hinweis aus, der Befehl unter **F1** bleibt.
 
@@ -454,7 +490,7 @@ Links unten steht «Dev Container: cas-se cloud labs», das Terminal ist ein Lin
 
 **Was schiefgehen kann**
 
-- «Cannot connect to the Docker daemon»: Docker läuft nicht oder ist noch nicht fertig gestartet. Der Status muss «Running» bzw. «Engine running» lauten.
+- «Cannot connect to the Docker daemon» oder «failed to connect to the docker API»: Docker läuft nicht oder ist noch nicht fertig gestartet. Der Status muss «Running» bzw. «Engine running» lauten. Schrittfolge zum Starten und Prüfen in C.5.
 - Der Aufbau bricht ab: **F1 → Dev Containers: Show Container Log** zeigt die Ursache in der letzten Zeile. Oft genügt **F1 → Rebuild Container**.
 - Der Aufbau ist unter Windows sehr langsam: Das Repo liegt vermutlich in OneDrive oder auf einem Netzlaufwerk. Ein Ordner wie `C:\dev\` behebt das.
 - Der Download der Images scheitert: Ein Firmen-Proxy oder eine Firewall blockiert den Zugriff auf die Registry. Ein anderes Netz oder Variante A im Browser verwenden.

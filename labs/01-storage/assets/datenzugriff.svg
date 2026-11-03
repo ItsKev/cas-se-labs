@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 560" width="1500" height="560" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Datenzugriff der Dokumentenplattform in Lab 01</title>
+  <desc id="d">Der Browser lädt über die SPA Dateien hoch und ruft Liste und Dateien über die API ab. Die API speichert und liest Dateien im Blob-Container dokumente. Lokal übernimmt Azurite die Rolle des Blob Storage. In Azure folgt später der echte Blob Storage mit Managed Identity.</desc>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555555"/></marker>
+    <marker id="gr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b7f5c"/></marker>
+  </defs>
+  <rect width="1500" height="560" fill="#ffffff"/>
+  <text x="30" y="42" font-size="26" font-weight="700" fill="#1f1f1d">Lab 01: Datenzugriff der Dokumentenplattform</text>
+
+  <!-- Browser -->
+  <rect x="30" y="100" width="330" height="240" rx="20" fill="#f3f3f1" stroke="#999999" stroke-width="2"/>
+  <text x="195" y="140" font-size="21" font-weight="700" text-anchor="middle" fill="#1f1f1d">Browser</text>
+  <text x="195" y="168" font-size="15" text-anchor="middle" fill="#555555">Single Page App (index.html)</text>
+  <text x="195" y="212" font-size="16" text-anchor="middle" fill="#1f1f1d">Dateien hochladen</text>
+  <text x="195" y="240" font-size="16" text-anchor="middle" fill="#1f1f1d">Liste anzeigen</text>
+  <text x="195" y="268" font-size="16" text-anchor="middle" fill="#1f1f1d">Datei herunterladen</text>
+
+  <!-- API -->
+  <rect x="540" y="100" width="420" height="240" rx="20" fill="#e0f3ec" stroke="#1b7f5c" stroke-width="2"/>
+  <text x="750" y="140" font-size="21" font-weight="700" text-anchor="middle" fill="#0f5c42">API (C# Minimal API)</text>
+  <text x="750" y="168" font-size="15" text-anchor="middle" fill="#0f5c42">liefert auch die SPA aus</text>
+  <text x="570" y="212" font-size="15" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">POST /api/documents</text>
+  <text x="570" y="240" font-size="15" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">GET  /api/documents</text>
+  <text x="570" y="268" font-size="15" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">GET  /api/documents/{id}/content</text>
+  <text x="570" y="306" font-size="14" fill="#0f5c42">prüft Typ und Grösse, vergibt die GUID</text>
+
+  <!-- Blob -->
+  <rect x="1140" y="100" width="330" height="240" rx="20" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2"/>
+  <text x="1305" y="140" font-size="21" font-weight="700" text-anchor="middle" fill="#1a4a9c">Blob Storage</text>
+  <text x="1305" y="168" font-size="15" text-anchor="middle" fill="#1a4a9c">lokal: Azurite (Port 10000)</text>
+  <rect x="1175" y="196" width="260" height="110" rx="10" fill="#ffffff" stroke="#2a6fdb"/>
+  <text x="1305" y="226" font-size="15" font-weight="700" text-anchor="middle" fill="#1a4a9c">Container «dokumente»</text>
+  <text x="1305" y="254" font-size="14" text-anchor="middle" fill="#1f1f1d">Blob-Name: GUID</text>
+  <text x="1305" y="276" font-size="14" text-anchor="middle" fill="#1f1f1d">Metadaten: originalname</text>
+  <text x="1305" y="298" font-size="14" text-anchor="middle" fill="#1f1f1d">Content-Type</text>
+
+  <!-- arrows -->
+  <line x1="360" y1="190" x2="540" y2="190" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <text x="450" y="178" font-size="13" text-anchor="middle" fill="#555555">HTTP</text>
+  <line x1="540" y1="260" x2="360" y2="260" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <line x1="960" y1="190" x2="1140" y2="190" stroke="#1b7f5c" stroke-width="3" marker-end="url(#gr)"/>
+  <text x="1050" y="178" font-size="13" text-anchor="middle" fill="#0f5c42">Azure.Storage.Blobs</text>
+  <line x1="1140" y1="260" x2="960" y2="260" stroke="#1b7f5c" stroke-width="3" marker-end="url(#gr)"/>
+
+  <!-- later -->
+  <rect x="30" y="400" width="1440" height="110" rx="14" fill="#fafafa" stroke="#999999" stroke-dasharray="8 5"/>
+  <text x="60" y="436" font-size="17" font-weight="700" fill="#555555">Später (Lab 02 und 03)</text>
+  <text x="60" y="466" font-size="15" fill="#555555">Derselbe Code läuft als Container in Azure. Azurite wird durch einen Storage Account ersetzt, der Connection String durch die Managed Identity.</text>
+  <text x="60" y="490" font-size="15" fill="#555555">Nur die Konfiguration wechselt: Storage:ConnectionString (lokal) oder Storage:BlobServiceUri (Azure).</text>
+</svg>
