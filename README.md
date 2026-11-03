@@ -4,7 +4,7 @@ Kursrepo zu den beiden Cloud-Modulen «Cloud Data Access & Processing» (Modul 1
 
 ## Einstieg
 
-Dieses Repo wird geforkt. **Fork → Create a new fork** erzeugt eine eigene Kopie im eigenen GitHub-Konto, in der gearbeitet wird. Dieses Repo selbst bleibt unverändert. Spätere Labs holt **Sync fork** in den eigenen Fork.
+Dieses Repo wird geforkt. **Fork → Create a new fork** erzeugt eine eigene Kopie im eigenen GitHub-Konto, in der gearbeitet wird. Dieses Repo selbst bleibt unverändert. Spätere Labs holt **Sync fork** in den eigenen Fork, danach im Codespace `git pull --no-rebase --no-edit`.
 
 Die Anleitung beginnt mit [labs/00-setup/LAB.md](labs/00-setup/LAB.md).
 
