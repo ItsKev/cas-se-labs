@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1520 760" width="1520" height="760" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Der rote Faden von Modul 1</title>
+  <desc id="d">Vier Stationen in der Reihenfolge Lab 01 bis Aufräumen. Pro Station steht, was passiert, wo die Anwendung läuft, wo die Dateien liegen und welcher Befehl wichtig ist. In Lab 01 läuft die Anwendung lokal mit Azurite, in Lab 02 legt Terraform die Plattform in Azure an, in Lab 03 läuft die eigene Anwendung in Azure, danach wird alles entfernt.</desc>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555555"/></marker>
+  </defs>
+  <rect width="1520" height="760" fill="#ffffff"/>
+  <text x="30" y="44" font-size="26" font-weight="700" fill="#1f1f1d">Der rote Faden von Modul 1: von der lokalen Anwendung zur Plattform in Azure</text>
+  <text x="30" y="72" font-size="16" fill="#5f5f5a">Ausgangslage: Rechnungen und Fotos liegen verstreut. Ziel: eine Dokumentenplattform, die Dateien speichert und wieder ausgibt, in Azure, per Code angelegt.</text>
+
+  <!-- row labels -->
+  <text x="30" y="155" font-size="16" font-weight="700" fill="#1f1f1d">Station</text>
+  <text x="30" y="260" font-size="16" font-weight="700" fill="#1f1f1d">Was passiert</text>
+  <text x="30" y="385" font-size="16" font-weight="700" fill="#1f1f1d">Wo läuft die</text>
+  <text x="30" y="406" font-size="16" font-weight="700" fill="#1f1f1d">Anwendung?</text>
+  <text x="30" y="505" font-size="16" font-weight="700" fill="#1f1f1d">Wo liegen die</text>
+  <text x="30" y="526" font-size="16" font-weight="700" fill="#1f1f1d">Dateien?</text>
+  <text x="30" y="625" font-size="16" font-weight="700" fill="#1f1f1d">Wichtigster</text>
+  <text x="30" y="646" font-size="16" font-weight="700" fill="#1f1f1d">Befehl</text>
+
+  <!-- station headers -->
+  <rect x="230" y="110" width="290" height="70" rx="14" fill="#e0f3ec" stroke="#1b7f5c" stroke-width="2.5"/>
+  <text x="375" y="140" font-size="19" font-weight="700" text-anchor="middle" fill="#0f5c42">Lab 01</text>
+  <text x="375" y="164" font-size="16" text-anchor="middle" fill="#1f1f1d">Speichern, lokal</text>
+  <rect x="560" y="110" width="290" height="70" rx="14" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2.5"/>
+  <text x="705" y="140" font-size="19" font-weight="700" text-anchor="middle" fill="#1a4a9c">Lab 02</text>
+  <text x="705" y="164" font-size="16" text-anchor="middle" fill="#1f1f1d">Plattform als Code</text>
+  <rect x="890" y="110" width="290" height="70" rx="14" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2.5"/>
+  <text x="1035" y="140" font-size="19" font-weight="700" text-anchor="middle" fill="#1a4a9c">Lab 03</text>
+  <text x="1035" y="164" font-size="16" text-anchor="middle" fill="#1f1f1d">Eigene Anwendung in Azure</text>
+  <rect x="1220" y="110" width="270" height="70" rx="14" fill="#fff4e0" stroke="#c26a00" stroke-width="2.5"/>
+  <text x="1355" y="140" font-size="19" font-weight="700" text-anchor="middle" fill="#7a4300">Zum Schluss</text>
+  <text x="1355" y="164" font-size="16" text-anchor="middle" fill="#1f1f1d">Aufräumen</text>
+
+  <line x1="520" y1="145" x2="560" y2="145" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <line x1="850" y1="145" x2="890" y2="145" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <line x1="1180" y1="145" x2="1220" y2="145" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+
+  <!-- row: what happens -->
+  <rect x="230" y="200" width="290" height="150" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="246" y="232" font-size="15" fill="#1f1f1d">Passenden Speicher wählen.</text>
+  <text x="246" y="256" font-size="15" fill="#1f1f1d">Die Anwendung legt Dateien ab,</text>
+  <text x="246" y="278" font-size="15" fill="#1f1f1d">listet sie und gibt sie wieder aus.</text>
+  <text x="246" y="310" font-size="14" fill="#555555">Alles ohne Azure, auf dem eigenen</text>
+  <text x="246" y="330" font-size="14" fill="#555555">Rechner testbar.</text>
+  <rect x="560" y="200" width="290" height="150" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="576" y="232" font-size="15" fill="#1f1f1d">Terraform legt in Azure das</text>
+  <text x="576" y="256" font-size="15" fill="#1f1f1d">Fundament an: Speicher, Registry,</text>
+  <text x="576" y="278" font-size="15" fill="#1f1f1d">Identität mit Rechten.</text>
+  <text x="576" y="310" font-size="14" fill="#555555">Code beschreibt, plan zeigt,</text>
+  <text x="576" y="330" font-size="14" fill="#555555">apply führt aus.</text>
+  <rect x="890" y="200" width="290" height="150" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="906" y="232" font-size="15" fill="#1f1f1d">Image bauen, in die Registry</text>
+  <text x="906" y="256" font-size="15" fill="#1f1f1d">laden, als Container App</text>
+  <text x="906" y="278" font-size="15" fill="#1f1f1d">betreiben.</text>
+  <text x="906" y="310" font-size="14" fill="#555555">Logs ansehen, Scale-to-zero und</text>
+  <text x="906" y="330" font-size="14" fill="#555555">Kaltstart beobachten.</text>
+  <rect x="1220" y="200" width="270" height="150" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="1236" y="232" font-size="15" fill="#1f1f1d">Alles wieder entfernen,</text>
+  <text x="1236" y="256" font-size="15" fill="#1f1f1d">damit keine Kosten laufen.</text>
+  <text x="1236" y="310" font-size="14" fill="#555555">Der Rückbau braucht mehrere</text>
+  <text x="1236" y="330" font-size="14" fill="#555555">Minuten.</text>
+
+  <!-- row: where does the app run -->
+  <rect x="230" y="370" width="290" height="100" rx="12" fill="#e0f3ec" stroke="#1b7f5c"/>
+  <text x="246" y="402" font-size="15" font-weight="700" fill="#0f5c42">auf dem eigenen Rechner</text>
+  <text x="246" y="426" font-size="14" fill="#1f1f1d">dotnet run oder docker compose</text>
+  <text x="246" y="448" font-size="14" fill="#1f1f1d">im Dev Container</text>
+  <rect x="560" y="370" width="290" height="100" rx="12" fill="#e6eefb" stroke="#2a6fdb"/>
+  <text x="576" y="402" font-size="15" font-weight="700" fill="#1a4a9c">noch nicht in Azure</text>
+  <text x="576" y="426" font-size="14" fill="#1f1f1d">das Fundament steht, die Anwendung</text>
+  <text x="576" y="448" font-size="14" fill="#1f1f1d">läuft erst ab Lab 03</text>
+  <rect x="890" y="370" width="290" height="100" rx="12" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2.5"/>
+  <text x="906" y="402" font-size="15" font-weight="700" fill="#1a4a9c">die eigene Anwendung in Azure</text>
+  <text x="906" y="426" font-size="14" fill="#1f1f1d">als Container App,</text>
+  <text x="906" y="448" font-size="14" fill="#1f1f1d">erreichbar per HTTPS</text>
+  <rect x="1220" y="370" width="270" height="100" rx="12" fill="#f3f3f1" stroke="#999999" stroke-dasharray="6 4"/>
+  <text x="1236" y="402" font-size="15" font-weight="700" fill="#555555">nirgends mehr</text>
+
+  <!-- row: where are the files -->
+  <rect x="230" y="490" width="290" height="100" rx="12" fill="#e0f3ec" stroke="#1b7f5c"/>
+  <text x="246" y="522" font-size="15" font-weight="700" fill="#0f5c42">Azurite</text>
+  <text x="246" y="546" font-size="14" fill="#1f1f1d">Attrappe von Azure Storage,</text>
+  <text x="246" y="568" font-size="14" fill="#1f1f1d">Zugriff mit Connection String</text>
+  <rect x="560" y="490" width="290" height="100" rx="12" fill="#e6eefb" stroke="#2a6fdb"/>
+  <text x="576" y="522" font-size="15" font-weight="700" fill="#1a4a9c">Storage Account in Azure</text>
+  <text x="576" y="546" font-size="14" fill="#1f1f1d">neu angelegt, ersetzt Azurite,</text>
+  <text x="576" y="568" font-size="14" fill="#1f1f1d">noch ungenutzt</text>
+  <rect x="890" y="490" width="290" height="100" rx="12" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2.5"/>
+  <text x="906" y="522" font-size="15" font-weight="700" fill="#1a4a9c">Storage Account in Azure</text>
+  <text x="906" y="546" font-size="14" fill="#1f1f1d">die Anwendung schreibt hinein,</text>
+  <text x="906" y="568" font-size="14" fill="#1f1f1d">Zugriff per Managed Identity</text>
+  <rect x="1220" y="490" width="270" height="100" rx="12" fill="#f3f3f1" stroke="#999999" stroke-dasharray="6 4"/>
+  <text x="1236" y="522" font-size="15" font-weight="700" fill="#555555">gelöscht</text>
+
+  <!-- row: command -->
+  <rect x="230" y="610" width="290" height="76" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="246" y="654" font-size="15" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">docker compose up</text>
+  <rect x="560" y="610" width="290" height="76" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="576" y="654" font-size="15" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">terraform apply</text>
+  <rect x="890" y="610" width="290" height="76" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="906" y="640" font-size="14" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">docker build, docker push,</text>
+  <text x="906" y="662" font-size="14" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">terraform apply -var image_tag=v1</text>
+  <rect x="1220" y="610" width="270" height="76" rx="12" fill="#ffffff" stroke="#c26a00" stroke-width="2"/>
+  <text x="1236" y="654" font-size="15" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">terraform destroy</text>
+
+  <text x="30" y="722" font-size="15" fill="#1f1f1d">Davor (Lab 00): Aufgabe verstehen, Architektur-Entwurf, Entwicklungsumgebung. Danach (Modul 2): Ereignisse und AI auf derselben Plattform.</text>
+  <text x="30" y="746" font-size="14" fill="#5f5f5a">Die Anwendung bleibt in allen Stationen dieselbe. Es ändert sich, wo sie läuft und wo ihre Dateien liegen.</text>
+</svg>

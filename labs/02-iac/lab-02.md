@@ -89,7 +89,7 @@ Der Ordner `labs/02-iac` enthält zwei Stände.
 
 Selbstständig wird in `start/infra` gearbeitet, im Demo-Modus in `solution/infra`.
 
-Alle Befehle dieses Labs laufen im Terminal des Dev Containers (Eingabeaufforderung `bash`, Pfad `/workspaces/...`, **Terminal → New Terminal**) und im gewählten Ordner. Zeigt die Eingabeaufforderung `PS /workspaces/...`, ist eine PowerShell geöffnet: im Terminal-Bereich neben dem `+` den Pfeil öffnen und **bash** wählen. Ein Terminal, das noch im Ordner von Lab 01 steht, braucht den Wechsel. Der volle Pfad funktioniert aus jedem Ordner:
+Alle Befehle dieses Labs laufen im Terminal des Dev Containers (Tab `bash`, Pfad `/workspaces/...` in der Eingabeaufforderung, **Terminal → New Terminal**) und im gewählten Ordner. Zeigt die Eingabeaufforderung `PS /workspaces/...`, ist eine PowerShell geöffnet: im Terminal-Bereich neben dem `+` den Pfeil öffnen und **bash** wählen. Ein Terminal, das noch im Ordner von Lab 01 steht, braucht den Wechsel. Der volle Pfad funktioniert aus jedem Ordner:
 
 ```bash
 cd /workspaces/cas-se-labs/labs/02-iac/start/infra      # selbstständig
@@ -98,7 +98,19 @@ cd /workspaces/cas-se-labs/labs/02-iac/solution/infra   # Demo-Modus
 
 Die Dateien (`main.tf`, `outputs.tf`) werden im Editor von VS Code geöffnet und bearbeitet: im Explorer links den Ordner `labs/02-iac/start/infra` aufklappen und die Datei anklicken. Einfügen und Speichern (`Ctrl+S`) geschehen dort, nicht im Terminal.
 
-Im Demo-Modus entfallen die Aufgaben 3 bis 5 und das Anlegen von `outputs.tf` in Aufgabe 6, die Dateien sind in `solution/infra` fertig.
+Die Aufgaben sind in beiden Modi dieselben, nur die Arbeit daran unterscheidet sich:
+
+| Aufgabe | Übung (`start/infra`) | Demo-Modus (`solution/infra`) |
+|---|---|---|
+| 1: Projektaufbau lesen | lesen | lesen |
+| 2: Anmelden, Provider registrieren, initialisieren | ausführen | ausführen |
+| 3: Resource Group und eindeutige Namen | Block in `main.tf` einfügen, `fmt` und `validate` | nur lesen, `main.tf` ist fertig |
+| 4: Storage Account und Container | Block einfügen, `fmt` und `validate` | nur lesen |
+| 5: Registry, Identität und Rollen | Block einfügen, `fmt` und `validate` | nur lesen |
+| 6: Planen, anlegen, prüfen | `outputs.tf` anlegen, dann `plan`, `apply`, prüfen | `outputs.tf` ist fertig, ab Schritt 2 ausführen |
+| Aufräumen | ausführen | ausführen |
+
+Im Demo-Modus folgt auf Aufgabe 2 also direkt Aufgabe 6. `terraform fmt` und `terraform validate` entfallen, weil sie zu den Aufgaben 3 bis 5 gehören. `terraform plan` und `terraform apply` prüfen die Konfiguration vor dem Ausführen selbst.
 
 ## Umgebung öffnen: Variante A, B, C
 
@@ -182,6 +194,8 @@ terraform init
 
 ## Aufgabe 3: Resource Group und eindeutige Namen
 
+Demo-Modus: Diese Aufgabe wird nur gelesen. `solution/infra/main.tf` enthält die Blöcke bereits. Weiter bei Aufgabe 6.
+
 Eine Resource Group fasst alle Ressourcen der Plattform zusammen. Sie ist der Container, den `destroy` am Ende entfernt. Storage Account und Registry brauchen weltweit eindeutige Namen. Ein Zufallssuffix verhindert Kollisionen zwischen den Teilnehmenden.
 
 **Ablauf**
@@ -238,6 +252,8 @@ Dasselbe gilt für die Prüfungen in den Aufgaben 4 und 5.
 
 ## Aufgabe 4: Storage Account und Container
 
+Demo-Modus: Diese Aufgabe wird nur gelesen. `solution/infra/main.tf` enthält die Blöcke bereits. Weiter bei Aufgabe 6.
+
 Der Storage Account hält die Dokumente und ersetzt Azurite aus Lab 01. Er erlaubt weder Shared Keys noch anonymen Zugriff. Der Zugriff erfolgt über Entra ID.
 
 **Ablauf**
@@ -290,6 +306,8 @@ terraform validate
 
 
 ## Aufgabe 5: Registry, Identität und Rollen
+
+Demo-Modus: Diese Aufgabe wird nur gelesen. `solution/infra/main.tf` enthält die Blöcke bereits. Weiter bei Aufgabe 6.
 
 Die Container Registry nimmt das Image der Anwendung auf. Eine User-Assigned Managed Identity ist die Identität der Anwendung. Rollenzuweisungen geben ihr genau die Rechte, die sie braucht: Images ziehen (`AcrPull`) und Blobs lesen und schreiben (`Storage Blob Data Contributor`, nur auf dem Container `dokumente`).
 
@@ -357,6 +375,8 @@ terraform validate
 `plan` vergleicht die Beschreibung mit dem, was bereits besteht, und zeigt die Änderungen. `apply` führt sie aus und schreibt den Zustand in die Datei `terraform.tfstate`. Outputs geben Werte aus, die nach dem Anlegen bekannt sind, zum Beispiel den Namen der Registry.
 
 **Ablauf**
+
+Demo-Modus: Schritt 1 entfällt, `outputs.tf` besteht in `solution/infra`. Weiter bei Schritt 2.
 
 Die Befehle laufen im Terminal des Dev Containers, im Ordner `infra`. `outputs.tf` entsteht im Editor von VS Code: im Explorer Rechtsklick auf den Ordner `infra`, **New File**, Name `outputs.tf`.
 
@@ -433,6 +453,8 @@ Die Befehle laufen im Terminal des Dev Containers, im Ordner `infra`. `outputs.t
 - [Kostenanalyse im Portal](https://learn.microsoft.com/azure/cost-management-billing/costs/quick-acm-cost-analysis): Kosten der Resource Group verfolgen
 
 ## Aufräumen
+
+Aufgeräumt wird auch dann, wenn gleich Lab 03 folgt. Lab 03 legt das Fundament in Aufgabe 1 selbst neu an, mit dem Terraform-Code in seinem eigenen Ordner. Der Zustand (State) eines Labs liegt in dessen Ordner. Besteht die Resource Group `rg-docplatform` noch aus Lab 02, meldet Lab 03 beim `apply` «already exists» und «needs to be imported». Das Neuanlegen dauert wenige Minuten. In einer Demo mit Lab 02 und Lab 03 hintereinander steht deshalb zwischen beiden `terraform destroy`.
 
 Ort: Terminal des Dev Containers, im Ordner `infra`. `terraform destroy` entfernt alles, was `apply` angelegt hat:
 

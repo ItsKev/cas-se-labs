@@ -79,7 +79,7 @@ Zwei Wege führen durch das Lab. Beide laufen in jeder Umgebung (Variante A, B u
 | Webseite nach dem Start | meldet Fehler 501, bis die Endpunkte ausgefüllt sind | funktioniert sofort |
 | `solution/` | dient zum Vergleichen nach jeder Aufgabe, nicht als Vorlage zum Kopieren | ist der Arbeitsordner |
 
-Alle Befehle laufen im Terminal des Dev Containers (VS Code: **Terminal → New Terminal**, Eingabeaufforderung `bash`) im gewählten Ordner:
+Alle Befehle laufen im Terminal des Dev Containers (**Terminal → New Terminal**, Tab `bash`) im gewählten Ordner:
 
 ```bash
 cd labs/01-storage/start      # Übung
@@ -90,10 +90,10 @@ Wie die Webseite der laufenden Anwendung geöffnet wird, hängt von der Umgebung
 
 Jeder Befehl in diesem Lab nennt den Ort, an dem er ausgeführt wird. Zwei Orte kommen vor:
 
-- **Terminal des Dev Containers:** das Terminal in VS Code oder im Browser-Codespace (Eingabeaufforderung `bash`, Pfad `/workspaces/...`).
+- **Terminal des Dev Containers:** das Terminal in VS Code oder im Browser-Codespace (Tab `bash`, Pfad `/workspaces/...` in der Eingabeaufforderung).
 - **Terminal auf dem eigenen Rechner:** ein Terminal des Betriebssystems ausserhalb des Dev Containers, etwa Windows PowerShell oder das macOS-Terminal. Es wird nur für die GitHub CLI und die Prüfung von Port 10000 in Anhang A gebraucht.
 
-Das richtige Terminal gehört zum Dev Container (Codespace oder lokaler Dev Container). Erkennbar ist es an der Eingabeaufforderung `bash` und einem Pfad, der mit `/workspaces/` beginnt. Eine Eingabeaufforderung wie `PS C:\...` gehört zu einem Terminal auf dem eigenen Rechner. Dort fehlen die Werkzeuge der Umgebung. `docker compose` startet Azurite und API dann direkt auf dem eigenen Rechner und belegt dort die Ports 10000 und 8080, und die Ansicht **Ports** bleibt leer. Der Docker-Daemon gehört zum Dev Container. Im Codespace (Variante A und B) ist nichts zu starten. In Variante C muss Docker Desktop bereits laufen, bevor der Dev Container geöffnet wird (Lab 00, C.5).
+Das richtige Terminal gehört zum Dev Container (Codespace oder lokaler Dev Container). Erkennbar ist es am Tab `bash` (rechts im Terminal-Bereich) und an einem Pfad, der mit `/workspaces/` beginnt. Die Eingabeaufforderung zeigt im Codespace das GitHub-Konto, den Ordner und den Branch, etwa `@konto →.../solution (main) $`. Das Wort `bash` steht nicht in der Eingabeaufforderung. Eine Eingabeaufforderung wie `PS C:\...` gehört zu einem Terminal auf dem eigenen Rechner. Dort fehlen die Werkzeuge der Umgebung. `docker compose` startet Azurite und API dann direkt auf dem eigenen Rechner und belegt dort die Ports 10000 und 8080, und die Ansicht **Ports** bleibt leer. Der Docker-Daemon gehört zum Dev Container. Im Codespace (Variante A und B) ist nichts zu starten. In Variante C muss Docker Desktop bereits laufen, bevor der Dev Container geöffnet wird (Lab 00, C.5).
 
 In `start/api/Program.cs` markieren Kommentare mit `TODO F1`, `TODO F2` und `TODO F3` die Stellen.
 
@@ -104,7 +104,7 @@ In `start/api/Program.cs` markieren Kommentare mit `TODO F1`, `TODO F2` und `TOD
 | | Variante A: Codespace im Browser | Variante B: Codespace in VS Code | Variante C: lokaler Dev Container |
 |---|---|---|---|
 | Umgebung öffnen | `github.com/codespaces`, den bestehenden Codespace wählen (Lab 00, Anhang A) | VS Code, **F1 → Codespaces: Connect to Codespace** (Lab 00, Anhang B) | Docker Desktop starten, den Ordner `cas-se-labs` in VS Code öffnen, **Reopen in Container** (Lab 00, Anhang C) |
-| Terminal | **Terminal → New Terminal**, Eingabeaufforderung `bash`, Pfad `/workspaces/...` | wie A | wie A |
+| Terminal | **Terminal → New Terminal**, Tab `bash`, Pfad `/workspaces/...` | wie A | wie A |
 | Ordner | `cd labs/01-storage/start` (Übung) oder `cd labs/01-storage/solution` (Demo-Modus) | wie A | wie A |
 | Docker | läuft im Codespace, nichts zu starten | wie A | läuft im Dev Container, Docker Desktop muss vor dem Öffnen laufen |
 | Webseite öffnen | Ansicht **Ports**, Zeile «API + SPA», Adresse `https://<Codespace-Name>-8080.app.github.dev` (Aufgabe 6) | `http://localhost:8080` im eigenen Browser | `http://localhost:8080` im eigenen Browser |
@@ -405,7 +405,7 @@ Der Download liefert die Datei mit dem ursprünglichen Namen und dem richtigen C
 
 Die Anwendung ist die C#-API. Sie liefert zugleich die Webseite (die SPA, eine einzelne `index.html`) aus. Zwei Starts stehen zur Wahl. Welcher passt, hängt davon ab, wie Azurite in Aufgabe 2 gestartet wurde.
 
-Beide Befehle werden im Terminal des Dev Containers eingegeben (Eingabeaufforderung `bash`, Pfad `/workspaces/...`), im Ordner des Labs (`labs/01-storage/start` oder `labs/01-storage/solution`). Zeigt die Eingabeaufforderung `PS /workspaces/...`, ist eine PowerShell geöffnet und die Befehle unten schlagen fehl. Im Terminal-Bereich neben dem `+` den Pfeil öffnen und **bash** wählen. Der Befehl `pwd` zeigt den aktuellen Ordner, `cd labs/01-storage/solution` wechselt dorthin, ausgehend vom Hauptordner `/workspaces/cas-se-labs`.
+Beide Befehle werden im Terminal des Dev Containers eingegeben (Tab `bash`, Pfad `/workspaces/...` in der Eingabeaufforderung), im Ordner des Labs (`labs/01-storage/start` oder `labs/01-storage/solution`). Zeigt die Eingabeaufforderung `PS /workspaces/...`, ist eine PowerShell geöffnet und die Befehle unten schlagen fehl. Im Terminal-Bereich neben dem `+` den Pfeil öffnen und **bash** wählen. Der Befehl `pwd` zeigt den aktuellen Ordner, `cd labs/01-storage/solution` wechselt dorthin, ausgehend vom Hauptordner `/workspaces/cas-se-labs`.
 
 **Start 1: alles als Container (Standard, wenn Azurite als Container läuft)**
 
@@ -440,7 +440,7 @@ Nach dem Öffnen der Webseite prüfen:
 5. Den Inhalt des Containers im Azure Storage Explorer auf dem eigenen Rechner ansehen (Installation und Bedienung in Anhang A): Container `dokumente`, Blob-Name als GUID, Metadatum `originalname`.
 6. Die API zusätzlich ohne Webseite ansprechen. `curl` ist ein Programm, das HTTP-Anfragen von der Kommandozeile sendet. Die Anfragen gehen an die API im Dev Container und verwenden deshalb in allen Varianten `http://localhost:8080`, auch im Codespace im Browser.
 
-   Ort: ein zweites Terminal des Dev Containers (Eingabeaufforderung `bash`, **Terminal → New Terminal**), weil das erste die laufende Anwendung zeigt. Zuerst in den Ordner des Labs wechseln. Dort liegt die Beispieldatei `sample.pdf`. Ohne diesen Wechsel meldet `curl` «Failed to open/read local data from file/application»:
+   Ort: ein zweites Terminal des Dev Containers (Tab `bash`, **Terminal → New Terminal**), weil das erste die laufende Anwendung zeigt. Zuerst in den Ordner des Labs wechseln. Dort liegt die Beispieldatei `sample.pdf`. Ohne diesen Wechsel meldet `curl` «Failed to open/read local data from file/application»:
 
    ```bash
    cd /workspaces/cas-se-labs/labs/01-storage/solution
