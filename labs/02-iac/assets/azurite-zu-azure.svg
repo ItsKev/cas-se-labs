@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 800" width="1500" height="800" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Von Azurite zu Azure Storage</title>
+  <desc id="d">Links Lab 01: Browser und API laufen lokal, die API greift per Connection String auf den Emulator Azurite zu. Rechts Lab 02 und 03: Browser und Container App in Azure, die Container App greift mit einer Managed Identity auf einen Storage Account zu, den Terraform angelegt hat. Der Code der API ist gleich, nur die Konfiguration wechselt.</desc>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555555"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a6fdb"/></marker>
+    <marker id="o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c26a00"/></marker>
+  </defs>
+  <rect width="1500" height="800" fill="#ffffff"/>
+  <text x="30" y="44" font-size="26" font-weight="700" fill="#1f1f1d">Von Azurite zu Azure Storage</text>
+  <text x="30" y="72" font-size="16" fill="#5f5f5a">Derselbe Code der Anwendung, andere Konfiguration: Der Emulator wird durch einen echten Storage Account ersetzt.</text>
+
+  <!-- left: lab 01 -->
+  <rect x="30" y="100" width="670" height="560" rx="20" fill="#f3f3f1" stroke="#999999" stroke-width="2"/>
+  <text x="365" y="136" font-size="21" font-weight="700" text-anchor="middle" fill="#1f1f1d">Lab 01: lokal im Dev Container</text>
+
+  <rect x="150" y="160" width="430" height="64" rx="12" fill="#ffffff" stroke="#b5b5ad"/>
+  <text x="365" y="198" font-size="18" font-weight="700" text-anchor="middle" fill="#1f1f1d">Browser</text>
+
+  <line x1="365" y1="224" x2="365" y2="262" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+
+  <rect x="90" y="262" width="550" height="132" rx="12" fill="#e0f3ec" stroke="#1b7f5c" stroke-width="2"/>
+  <text x="365" y="293" font-size="18" font-weight="700" text-anchor="middle" fill="#0f5c42">API (C#), dieselbe Anwendung</text>
+  <text x="365" y="318" font-size="15" text-anchor="middle" fill="#1f1f1d">läuft mit dotnet run oder docker compose</text>
+  <text x="365" y="350" font-size="14" text-anchor="middle" fill="#1f1f1d">Konfiguration:</text>
+  <text x="365" y="372" font-size="14" font-family="Consolas, 'Courier New', monospace" text-anchor="middle" fill="#1f1f1d">Storage:ConnectionString</text>
+
+  <line x1="365" y1="394" x2="365" y2="452" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <text x="380" y="428" font-size="14" fill="#555555">Connection String (öffentlicher</text>
+  <text x="380" y="446" font-size="14" fill="#555555">Entwicklungsschlüssel)</text>
+
+  <rect x="90" y="452" width="550" height="150" rx="12" fill="#ffffff" stroke="#999999" stroke-width="2"/>
+  <text x="365" y="486" font-size="18" font-weight="700" text-anchor="middle" fill="#1f1f1d">Azurite</text>
+  <text x="365" y="511" font-size="15" text-anchor="middle" fill="#555555">Emulator für Blob Storage, Port 10000</text>
+  <text x="365" y="545" font-size="14" text-anchor="middle" fill="#1f1f1d">Container «dokumente»:</text>
+  <text x="365" y="566" font-size="14" text-anchor="middle" fill="#1f1f1d">legt die Anwendung beim Start an</text>
+  <text x="365" y="588" font-size="14" text-anchor="middle" fill="#1f1f1d">kostenlos, nur auf dem eigenen Rechner</text>
+
+  <!-- right: lab 02 and 03 -->
+  <rect x="800" y="100" width="670" height="560" rx="20" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2"/>
+  <text x="1135" y="136" font-size="21" font-weight="700" text-anchor="middle" fill="#1a4a9c">Lab 02 und 03: in Azure</text>
+
+  <rect x="920" y="160" width="430" height="64" rx="12" fill="#ffffff" stroke="#2a6fdb"/>
+  <text x="1135" y="198" font-size="18" font-weight="700" text-anchor="middle" fill="#1f1f1d">Browser</text>
+
+  <line x1="1135" y1="224" x2="1135" y2="262" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <text x="1150" y="248" font-size="13" fill="#555555">HTTPS</text>
+
+  <rect x="860" y="262" width="550" height="132" rx="12" fill="#e0f3ec" stroke="#1b7f5c" stroke-width="2"/>
+  <text x="1135" y="293" font-size="18" font-weight="700" text-anchor="middle" fill="#0f5c42">API (C#), dieselbe Anwendung</text>
+  <text x="1135" y="318" font-size="15" text-anchor="middle" fill="#1f1f1d">läuft als Container App (ab Lab 03, eigenes Image)</text>
+  <text x="1135" y="350" font-size="14" text-anchor="middle" fill="#1f1f1d">Konfiguration:</text>
+  <text x="1135" y="372" font-size="14" font-family="Consolas, 'Courier New', monospace" text-anchor="middle" fill="#1f1f1d">Storage:BlobServiceUri und AZURE_CLIENT_ID</text>
+
+  <line x1="1135" y1="394" x2="1135" y2="452" stroke="#2a6fdb" stroke-width="3" marker-end="url(#b)"/>
+  <text x="1150" y="420" font-size="14" fill="#1a4a9c">Managed Identity (Entra ID),</text>
+  <text x="1150" y="438" font-size="14" fill="#1a4a9c">kein Schlüssel</text>
+
+  <rect x="860" y="452" width="550" height="150" rx="12" fill="#ffffff" stroke="#2a6fdb" stroke-width="2.5"/>
+  <text x="1135" y="486" font-size="18" font-weight="700" text-anchor="middle" fill="#1f1f1d">Storage Account in Azure</text>
+  <text x="1135" y="511" font-size="15" text-anchor="middle" fill="#555555">von Terraform angelegt, keine Shared Keys</text>
+  <text x="1135" y="545" font-size="14" text-anchor="middle" fill="#1f1f1d">Container «dokumente»: von Terraform angelegt</text>
+  <text x="1135" y="566" font-size="14" text-anchor="middle" fill="#1f1f1d">Rolle «Storage Blob Data Contributor» für die Identität</text>
+  <text x="1135" y="588" font-size="14" text-anchor="middle" fill="#1f1f1d">Kosten laufen, bis terraform destroy ausgeführt ist</text>
+
+  <!-- middle: replace -->
+  <line x1="640" y1="527" x2="856" y2="527" stroke="#c26a00" stroke-width="4" marker-end="url(#o)"/>
+  <rect x="700" y="487" width="80" height="30" rx="15" fill="#fff4e0" stroke="#c26a00"/>
+  <text x="740" y="508" font-size="14" font-weight="700" text-anchor="middle" fill="#7a4300">ersetzt</text>
+
+
+  <!-- bottom -->
+  <text x="30" y="696" font-size="16" fill="#1f1f1d"><tspan font-weight="700">Gleich bleibt</tspan> der Code der API (Program.cs). Ist Storage:ConnectionString gesetzt, nutzt sie diesen (Azurite). Sonst nutzt sie</text>
+  <text x="30" y="720" font-size="16" fill="#1f1f1d">Storage:BlobServiceUri mit der Managed Identity (DefaultAzureCredential).</text>
+  <text x="30" y="752" font-size="16" fill="#1f1f1d"><tspan font-weight="700">In Lab 02</tspan> entsteht die Azure-Seite des Speichers: Storage Account, Container, Identität und Rolle.</text>
+  <text x="30" y="776" font-size="16" fill="#1f1f1d"><tspan font-weight="700">Ab Lab 03</tspan> läuft die eigene Anwendung in Azure und schreibt in diesen Storage Account statt in Azurite.</text>
+</svg>

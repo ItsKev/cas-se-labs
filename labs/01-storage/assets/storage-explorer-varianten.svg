@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 680" width="1500" height="680" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Verbindung des Storage Explorers zu Azurite in den Varianten A, B und C</title>
+  <desc id="d">Azurite lauscht im Dev Container auf Port 10000. Der Storage Explorer läuft auf dem eigenen Rechner und verbindet sich mit 127.0.0.1:10000. In Variante A leitet der Befehl gh codespace ports forward den Port aus dem Codespace im Browser weiter. In Variante B leitet VS Code den Port aus dem Codespace automatisch weiter. In Variante C läuft der Dev Container lokal in Docker Desktop und VS Code leitet den Port weiter.</desc>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#555555"/></marker>
+  </defs>
+  <rect width="1500" height="680" fill="#ffffff"/>
+  <text x="30" y="42" font-size="26" font-weight="700" fill="#1f1f1d">Storage Explorer: Verbindung zu Azurite in den drei Varianten</text>
+
+  <rect x="30" y="80" width="1440" height="175" rx="14" fill="#fafafa" stroke="#cccccc"/>
+  <text x="50" y="110" font-size="18" font-weight="700" fill="#1f1f1d">Variante A: Codespace im Browser</text>
+  <rect x="50" y="128" width="420" height="108" rx="12" fill="#f3f3f1" stroke="#999999" stroke-width="2"/>
+  <text x="64" y="152" font-size="14" fill="#555555">Eigener Rechner</text>
+  <rect x="70" y="166" width="170" height="54" rx="8" fill="#ffffff" stroke="#999999"/>
+  <text x="155" y="198" font-size="16" font-weight="700" text-anchor="middle" fill="#1f1f1d">Storage Explorer</text>
+  <rect x="290" y="166" width="160" height="54" rx="8" fill="#ffffff" stroke="#999999"/>
+  <text x="370" y="198" font-size="16" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">127.0.0.1:10000</text>
+  <line x1="240" y1="193" x2="290" y2="193" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <line x1="470" y1="193" x2="960" y2="193" stroke="#2a6fdb" stroke-width="3" marker-end="url(#g)"/>
+  <text x="715" y="172" font-size="15" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1a4a9c">gh codespace ports forward 10000:10000</text>
+  <text x="715" y="220" font-size="14" text-anchor="middle" fill="#555555">Befehl auf dem eigenen Rechner, Fenster bleibt offen</text>
+  <rect x="960" y="128" width="490" height="108" rx="12" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2"/>
+  <text x="974" y="152" font-size="14" fill="#1a4a9c">Codespace bei GitHub (Cloud), Dev Container mit Azurite</text>
+  <rect x="990" y="166" width="200" height="54" rx="8" fill="#ffffff" stroke="#2a6fdb"/>
+  <text x="1090" y="198" font-size="16" font-weight="700" text-anchor="middle" fill="#1a4a9c">Azurite, Port 10000</text>
+  <text x="1215" y="198" font-size="14" fill="#1f1f1d">Container «dokumente»</text>
+
+  <rect x="30" y="275" width="1440" height="175" rx="14" fill="#fafafa" stroke="#cccccc"/>
+  <text x="50" y="305" font-size="18" font-weight="700" fill="#1f1f1d">Variante B: Codespace in VS Code</text>
+  <rect x="50" y="323" width="420" height="108" rx="12" fill="#f3f3f1" stroke="#999999" stroke-width="2"/>
+  <text x="64" y="347" font-size="14" fill="#555555">Eigener Rechner</text>
+  <rect x="70" y="361" width="170" height="54" rx="8" fill="#ffffff" stroke="#999999"/>
+  <text x="155" y="393" font-size="16" font-weight="700" text-anchor="middle" fill="#1f1f1d">Storage Explorer</text>
+  <rect x="290" y="361" width="160" height="54" rx="8" fill="#ffffff" stroke="#999999"/>
+  <text x="370" y="393" font-size="16" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">127.0.0.1:10000</text>
+  <line x1="240" y1="388" x2="290" y2="388" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <line x1="470" y1="388" x2="960" y2="388" stroke="#2a6fdb" stroke-width="3" marker-end="url(#g)"/>
+  <text x="715" y="367" font-size="15" text-anchor="middle" fill="#1a4a9c">VS Code leitet Port 10000 automatisch weiter</text>
+  <text x="715" y="415" font-size="14" text-anchor="middle" fill="#555555">Tunnel über GitHub, kein Befehl nötig</text>
+  <rect x="960" y="323" width="490" height="108" rx="12" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2"/>
+  <text x="974" y="347" font-size="14" fill="#1a4a9c">Codespace bei GitHub (Cloud), Dev Container mit Azurite</text>
+  <rect x="990" y="361" width="200" height="54" rx="8" fill="#ffffff" stroke="#2a6fdb"/>
+  <text x="1090" y="393" font-size="16" font-weight="700" text-anchor="middle" fill="#1a4a9c">Azurite, Port 10000</text>
+  <text x="1215" y="393" font-size="14" fill="#1f1f1d">Container «dokumente»</text>
+
+  <rect x="30" y="470" width="1440" height="175" rx="14" fill="#fafafa" stroke="#cccccc"/>
+  <text x="50" y="500" font-size="18" font-weight="700" fill="#1f1f1d">Variante C: lokaler Dev Container</text>
+  <rect x="50" y="518" width="420" height="108" rx="12" fill="#f3f3f1" stroke="#999999" stroke-width="2"/>
+  <text x="64" y="542" font-size="14" fill="#555555">Eigener Rechner</text>
+  <rect x="70" y="556" width="170" height="54" rx="8" fill="#ffffff" stroke="#999999"/>
+  <text x="155" y="588" font-size="16" font-weight="700" text-anchor="middle" fill="#1f1f1d">Storage Explorer</text>
+  <rect x="290" y="556" width="160" height="54" rx="8" fill="#ffffff" stroke="#999999"/>
+  <text x="370" y="588" font-size="16" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" fill="#1f1f1d">127.0.0.1:10000</text>
+  <line x1="240" y1="583" x2="290" y2="583" stroke="#555555" stroke-width="3" marker-end="url(#g)"/>
+  <line x1="470" y1="583" x2="960" y2="583" stroke="#2a6fdb" stroke-width="3" marker-end="url(#g)"/>
+  <text x="715" y="562" font-size="15" text-anchor="middle" fill="#1a4a9c">VS Code leitet Port 10000 automatisch weiter</text>
+  <text x="715" y="610" font-size="14" text-anchor="middle" fill="#555555">lokal, kein Tunnel über das Internet</text>
+  <rect x="960" y="518" width="490" height="108" rx="12" fill="#e6eefb" stroke="#2a6fdb" stroke-width="2"/>
+  <text x="974" y="542" font-size="14" fill="#1a4a9c">Eigener Rechner, Dev Container in Docker Desktop mit Azurite</text>
+  <rect x="990" y="556" width="200" height="54" rx="8" fill="#ffffff" stroke="#2a6fdb"/>
+  <text x="1090" y="588" font-size="16" font-weight="700" text-anchor="middle" fill="#1a4a9c">Azurite, Port 10000</text>
+  <text x="1215" y="588" font-size="14" fill="#1f1f1d">Container «dokumente»</text>
+</svg>

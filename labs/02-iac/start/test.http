@@ -1,0 +1,21 @@
+@host = http://localhost:8080
+
+### Health
+GET {{host}}/healthz
+
+### Upload a PDF (adjust the path of the file)
+POST {{host}}/api/documents
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="rechnung.pdf"
+Content-Type: application/pdf
+
+< ./sample.pdf
+--boundary--
+
+### List documents
+GET {{host}}/api/documents
+
+### Download (replace the id with one from the list)
+GET {{host}}/api/documents/00000000-0000-0000-0000-000000000000/content

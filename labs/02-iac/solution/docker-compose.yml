@@ -1,0 +1,23 @@
+# Local stack: Azurite (storage emulator) and the API, both as containers.
+services:
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    # Blob service only. 0.0.0.0 makes it reachable from the api container and from the host.
+    # --skipApiVersionCheck: the Azure SDK may be newer than this Azurite image knows.
+    command: azurite-blob --blobHost 0.0.0.0 --skipApiVersionCheck
+    ports:
+      # host:container. Storage Explorer and curl reach Azurite on port 10000 of the host.
+      - "10000:10000"
+
+  api:
+    build: ./api
+    ports:
+      # The SPA and the API at http://localhost:8080
+      - "8080:8080"
+    environment:
+      # Well-known Azurite development account, not a secret
+      # Inside the compose network the host name is the service name: azurite (not localhost).
+      Storage__ConnectionString: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;"
+    # Start order only: it does not wait until Azurite accepts connections.
+    depends_on:
+      - azurite
