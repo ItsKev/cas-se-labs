@@ -54,9 +54,9 @@ Nicht im Scope: Anmeldung der Benutzer, Virenprüfung, Löschen und Ändern von 
 
 | Voraussetzung | Prüfung |
 |---|---|
-| Lab 00 abgeschlossen, Entwicklungsumgebung läuft | `bash labs/00-setup/check.sh` im Terminal des Dev Containers meldet «Local environment is ready.» |
+| Lab 00 abgeschlossen, Entwicklungsumgebung läuft | `bash /workspaces/cas-se-labs/labs/00-setup/check.sh` im Terminal des Dev Containers meldet «Local environment is ready.» |
 | Lab 01 im eigenen Repo vorhanden | Ordner `labs/01-storage` besteht, sonst **Sync fork** (Lab 00, «Spätere Labs übernehmen») |
-| Docker-Daemon läuft, oder Node.js ist vorhanden | `docker info` im Terminal des Dev Containers zeigt unter «Server» eine Version. Alternativ zeigt `node --version` dort eine Version. Docker ist der Standardweg, Node.js genügt für Azurite ohne Docker (Aufgabe 2) |
+| Docker-Daemon läuft | `docker info` im Terminal des Dev Containers zeigt unter «Server» eine Version |
 
 Ein Azure-Abo ist für dieses Lab nicht nötig. Zum Ansehen der abgelegten Dateien dient der Azure Storage Explorer (Anhang A).
 
@@ -169,9 +169,7 @@ Verfügbarkeit und Preise von Stufen und Redundanz hängen von der Region ab. Vo
 
 Azurite ist ein Emulator für Blob Storage, der lokal auf Port 10000 läuft. Er verwendet ein fest definiertes Entwicklungskonto mit öffentlich bekanntem Schlüssel. Das ist kein Geheimnis und gilt nur für lokale Tests.
 
-Zwei Wege starten Azurite. Der Container braucht einen laufenden Docker-Daemon. Der Start ohne Docker braucht Node.js. Beide belegen Port 10000 und verhalten sich für den Rest des Labs gleich. Nur einer der beiden läuft zur gleichen Zeit.
-
-### Azurite als Container
+Azurite läuft als Container. Der Container braucht einen laufenden Docker-Daemon. Er gehört in allen drei Varianten zum Dev Container.
 
 **Ablauf**
 
@@ -199,49 +197,6 @@ Zwei Wege starten Azurite. Der Container braucht einen laufenden Docker-Daemon. 
 - `Cannot connect to the Docker daemon` oder kein Abschnitt «Server» bei `docker info`: Die Umgebung wurde ohne Docker-Daemon gestartet. Im Codespace **F1 → Codespaces: Rebuild Container**, im lokalen Dev Container **F1 → Dev Containers: Rebuild Container**. Beim lokalen Dev Container muss Docker Desktop laufen (Lab 00, C.5).
 - `failed to connect to the docker API ... npipe` in einem PowerShell-Fenster: Das Fenster gehört zum eigenen Rechner und nicht zum Dev Container. Der Befehl gehört in das Terminal des Dev Containers.
 - Port 10000 ist belegt: Ein anderer Azurite oder Prozess läuft bereits. Mit `docker compose down` aufräumen oder den anderen Prozess beenden.
-
-### Azurite ohne Docker
-
-Azurite ist ein Node.js-Paket und läuft ohne Container. Diese Variante eignet sich, wenn der Docker-Daemon nicht zur Verfügung steht.
-
-**Ablauf**
-
-1. Prüfen, ob Node.js vorhanden ist (Terminal des Dev Containers):
-
-   ```bash
-   node --version
-   ```
-
-   Die Ausgabe zeigt eine Versionsnummer, zum Beispiel `v24.19.0`. Fehlt Node.js, von `https://nodejs.org` die LTS-Version installieren und ein neues Terminal öffnen.
-
-2. Im Dev Container ein zweites Terminal öffnen (**Terminal → New Terminal**) und in den gewählten Ordner (`labs/01-storage/start`, im Demo-Modus `labs/01-storage/solution`) wechseln. Azurite starten:
-
-   ```bash
-   npx azurite --silent --location .azurite --blobHost 127.0.0.1
-   ```
-
-   Das erste Mal lädt `npx` das Paket nach und fragt gegebenenfalls nach Bestätigung (`Ok to proceed?`, mit `y` antworten). Der Befehl bleibt im Vordergrund und gibt keine weitere Ausgabe aus. Das Terminal bleibt für die Dauer des Labs geöffnet.
-
-3. Im ersten Terminal des Dev Containers prüfen, ob Azurite antwortet:
-
-   ```bash
-   curl -i http://127.0.0.1:10000/devstoreaccount1?comp=list
-   ```
-
-   Die Antwort beginnt mit `HTTP/1.1 403`. Der Status 403 ist erwartet, weil die Anfrage nicht signiert ist. Er zeigt, dass Azurite auf Port 10000 antwortet.
-
-
-**Erwartetes Ergebnis**
-
-Azurite läuft im zweiten Terminal, und `curl` erhält die Antwort 403 von Port 10000. Im gewählten Ordner (`start` oder `solution`) liegt ein neuer Ordner `.azurite` mit den Daten. Der Ordner steht in `.gitignore` und kommt nicht ins Repo.
-
-**Was schiefgehen kann**
-
-- `node: command not found`: Node.js fehlt oder das Terminal wurde vor der Installation geöffnet. Node.js installieren und ein neues Terminal öffnen.
-- `npx` bricht mit einem Netzwerkfehler ab: Ein Proxy oder eine Firewall blockiert den Download von npmjs.com. Ein anderes Netz oder Azurite als Container verwenden.
-- `EADDRINUSE` oder «address already in use» auf Port 10000: Azurite oder der Container läuft bereits. `docker compose down` beenden oder das andere Terminal mit Azurite schliessen.
-- `curl` meldet «Connection refused»: Das zweite Terminal wurde geschlossen oder Azurite ist beim Start abgebrochen. Den Befehl aus Schritt 2 erneut ausführen.
-- Das Terminal im Dev Container hat kein Node.js: Dann Azurite als Container verwenden, im Codespace läuft Docker.
 
 **Weiterführend**
 
@@ -332,7 +287,7 @@ Beim Auflisten liefert Blob Storage Metadaten nur auf Anfrage mit. `BlobTraits.M
 
 **Ablauf**
 
-Den Endpunkt `GET /api/documents` ausfüllen:
+Den Endpunkt `GET /api/documents` ausfüllen. Dabei die Zeilen `await Task.CompletedTask;` und `return Results.StatusCode(...)` dieses Endpunkts entfernen:
 
 ```csharp
 var items = new List<DocumentInfo>();
@@ -369,7 +324,7 @@ Ein Blob lässt sich als Stream lesen. Die API gibt den Stream an den Browser we
 
 **Ablauf**
 
-Den Endpunkt `GET /api/documents/{id}/content` ausfüllen:
+Den Endpunkt `GET /api/documents/{id}/content` ausfüllen. Dabei die Zeilen `await Task.CompletedTask;` und `return Results.StatusCode(...)` dieses Endpunkts entfernen:
 
 ```csharp
 var blob = container.GetBlobClient(id.ToString());
@@ -403,11 +358,11 @@ Der Download liefert die Datei mit dem ursprünglichen Namen und dem richtigen C
 
 **Ablauf**
 
-Die Anwendung ist die C#-API. Sie liefert zugleich die Webseite (die SPA, eine einzelne `index.html`) aus. Zwei Starts stehen zur Wahl. Welcher passt, hängt davon ab, wie Azurite in Aufgabe 2 gestartet wurde.
+Die Anwendung ist die C#-API. Sie liefert zugleich die Webseite (die SPA, eine einzelne `index.html`) aus. Zwei Starts stehen zur Wahl. Start 1 ist der Standard, Start 2 dient zum Debuggen.
 
 Beide Befehle werden im Terminal des Dev Containers eingegeben (Tab `bash`, Pfad `/workspaces/...` in der Eingabeaufforderung), im Ordner des Labs (`labs/01-storage/start` oder `labs/01-storage/solution`). Zeigt die Eingabeaufforderung `PS /workspaces/...`, ist eine PowerShell geöffnet und die Befehle unten schlagen fehl. Im Terminal-Bereich neben dem `+` den Pfeil öffnen und **bash** wählen. Der Befehl `pwd` zeigt den aktuellen Ordner, `cd labs/01-storage/solution` wechselt dorthin, ausgehend vom Hauptordner `/workspaces/cas-se-labs`.
 
-**Start 1: alles als Container (Standard, wenn Azurite als Container läuft)**
+**Start 1: alles als Container (Standard)**
 
 Der Befehl baut aus dem Code ein Container-Image, startet die API als Container und startet Azurite mit, falls es noch nicht läuft. Der Azurite-Container aus Aufgabe 2 wird weiterverwendet. Das Terminal bleibt belegt und zeigt die Log-Ausgabe der Anwendung. Für weitere Befehle ein zweites Terminal öffnen (**Terminal → New Terminal**).
 
@@ -415,9 +370,9 @@ Der Befehl baut aus dem Code ein Container-Image, startet die API als Container 
 docker compose up --build
 ```
 
-**Start 2: API direkt starten, ohne Container (wenn Azurite mit `npx` läuft)**
+**Start 2: API direkt starten, ohne Container-Image (zum Debuggen)**
 
-Der Befehl startet die API ohne Container-Image direkt mit `dotnet`. Das ist nötig, wenn Azurite mit `npx` läuft: `docker compose up` würde einen zweiten Azurite starten, der ebenfalls Port 10000 braucht, und dieser Start scheitert. Der Start funktioniert auch mit einem Azurite-Container und eignet sich zum Debuggen, weil kein Image gebaut wird. Die zwei Variablen vor `dotnet` legen fest, dass die API auf Port 8080 lauscht und im Modus «Development» läuft. Die Verbindung zu Azurite steht in `api/appsettings.Development.json`.
+Der Befehl startet die API ohne Container-Image direkt mit `dotnet`. Azurite läuft dabei weiter als Container aus Aufgabe 2. Der Start eignet sich zum Debuggen, weil kein Image gebaut wird. Beendet wird die API mit `Ctrl+C` im selben Terminal. Die zwei Variablen vor `dotnet` legen fest, dass die API auf Port 8080 lauscht und im Modus «Development» läuft. Die Verbindung zu Azurite steht in `api/appsettings.Development.json`.
 
 ```bash
 ASPNETCORE_URLS=http://localhost:8080 ASPNETCORE_ENVIRONMENT=Development dotnet run --project api
@@ -436,14 +391,15 @@ Nach dem Öffnen der Webseite prüfen:
 1. Eine PDF-Datei hochladen. Sie erscheint in der Liste.
 2. Die Datei über den Link in der Liste herunterladen und mit dem Original vergleichen.
 3. Eine PDF-Datei mit Umlaut und Leerzeichen im Namen hochladen, zum Beispiel `Rechnung Müller.pdf`. Name in der Liste und Name beim Download müssen dem Original entsprechen (F5).
-4. Eine Textdatei hochladen. Die Webseite zeigt «Erlaubt sind PDF, DOCX, JPG und PNG.»
-5. Den Inhalt des Containers im Azure Storage Explorer auf dem eigenen Rechner ansehen (Installation und Bedienung in Anhang A): Container `dokumente`, Blob-Name als GUID, Metadatum `originalname`.
+4. Eine Textdatei per Drag & Drop auf die Upload-Fläche ziehen. Der Dateidialog zeigt nur die erlaubten Typen, ausser der Filter steht auf «Alle Dateien». Die Webseite zeigt «<Dateiname>: Erlaubt sind PDF, DOCX, JPG und PNG.»
+5. Den Inhalt des Containers im Azure Storage Explorer auf dem eigenen Rechner ansehen (Installation und Bedienung in Anhang A dieses Labs, für die Definition of Done nicht nötig): Container `dokumente`, Blob-Name als GUID, Metadatum `originalname`.
 6. Die API zusätzlich ohne Webseite ansprechen. `curl` ist ein Programm, das HTTP-Anfragen von der Kommandozeile sendet. Die Anfragen gehen an die API im Dev Container und verwenden deshalb in allen Varianten `http://localhost:8080`, auch im Codespace im Browser.
 
    Ort: ein zweites Terminal des Dev Containers (Tab `bash`, **Terminal → New Terminal**), weil das erste die laufende Anwendung zeigt. Zuerst in den Ordner des Labs wechseln. Dort liegt die Beispieldatei `sample.pdf`. Ohne diesen Wechsel meldet `curl` «Failed to open/read local data from file/application»:
 
    ```bash
-   cd /workspaces/cas-se-labs/labs/01-storage/solution
+   cd /workspaces/cas-se-labs/labs/01-storage/start      # Übung
+   cd /workspaces/cas-se-labs/labs/01-storage/solution   # Demo-Modus
    ```
 
    Der erste Befehl lädt `sample.pdf` hoch, der zweite ruft die Liste ab, der dritte fragt eine Id ab, die nicht existiert. Die Option `-i` zeigt zusätzlich den Status und die Header der Antwort:
@@ -462,9 +418,9 @@ Nach dem Öffnen der Webseite prüfen:
 
    Ablauf:
 
-   1. Im Explorer von VS Code `labs/01-storage/solution/test.http` doppelklicken. Die Datei öffnet sich im Editor.
+   1. Im Explorer von VS Code `test.http` im Ordner des Labs doppelklicken (`labs/01-storage/start` in der Übung, `labs/01-storage/solution` im Demo-Modus). Die Datei öffnet sich im Editor.
    2. Über jeder Anfrage erscheint der graue Link **Send Request**, zum Beispiel über `GET {{host}}/healthz` (unter «### Health»). Auf **Send Request** klicken.
-   3. Rechts neben der Datei öffnet sich ein neuer Tab «Response». Er zeigt Status, Header und Inhalt der Antwort, etwa `HTTP/1.1 200 OK` und den Text `ok`.
+   3. Rechts neben der Datei öffnet sich ein neuer Tab «Response». Er zeigt Status, Header und Inhalt der Antwort, etwa `HTTP/1.1 200 OK` und den Inhalt `"ok"`.
    4. Die Anfragen der Reihe nach senden: «Health», «Upload a PDF», «List documents». Beim Upload ist Status 201 mit einer `id` erwartet. Die `id` aus der Liste in die Zeile unter «### Download» an Stelle von `00000000-0000-0000-0000-000000000000` einsetzen und **Send Request** wählen. Die Antwort enthält den Dateiinhalt, im Header `Content-Disposition` steht der Originalname.
 
    Erscheint der Link **Send Request** nicht, ist die Erweiterung nicht aktiv oder die Datei hat nicht die Endung `.http`. Dann `curl` verwenden.
@@ -499,7 +455,7 @@ Nach dem Öffnen der Webseite prüfen:
 
 ## Aufräumen
 
-Azurite als Container (Terminal des Dev Containers, im gewählten Ordner):
+Ort: Terminal des Dev Containers, im gewählten Ordner. Läuft die API mit Start 2, zuerst `Ctrl+C` in ihrem Terminal.
 
 ```bash
 docker compose down
@@ -507,14 +463,12 @@ docker compose down
 
 Das beendet Azurite und die API. Die hochgeladenen Testdateien gehen mit dem Container verloren.
 
-Azurite ohne Docker: Die API und Azurite mit `Ctrl+C` in ihren Terminals des Dev Containers beenden. Der Ordner `.azurite` im gewählten Ordner (`start` oder `solution`) enthält die hochgeladenen Testdateien und lässt sich löschen, sobald die Daten nicht mehr gebraucht werden.
-
 Ein Azure-Abo wurde nicht benutzt, es gibt nichts weiter abzuräumen.
 
 ## Definition of Done
 
 - [ ] Für die Fälle A, B und C ist ein Speichertyp gewählt und in zwei Sätzen begründet. Für Fall A sind Stufe und Redundanz festgelegt.
-- [ ] Azurite läuft: `docker compose ps` (Terminal des Dev Containers) zeigt den Dienst `azurite` im Status `Up` (Container), oder `curl -i http://127.0.0.1:10000/devstoreaccount1?comp=list` antwortet mit 403 (ohne Docker).
+- [ ] Azurite läuft: `docker compose ps` (Terminal des Dev Containers) zeigt den Dienst `azurite` im Status `Up`.
 - [ ] N2: Die Anwendung läuft lokal gegen Azurite, ohne Azure-Abo.
 - [ ] F1: Der Upload einer PDF-Datei liefert 201 und eine Id.
 - [ ] F2: Die Liste zeigt hochgeladene Dokumente, das neueste zuerst.
@@ -527,7 +481,7 @@ Ein Azure-Abo wurde nicht benutzt, es gibt nichts weiter abzuräumen.
 
 ## Nächste Schritte
 
-Lab 02 («Infrastructure as Code mit Terraform») rollt in Azure aus, was hier lokal läuft: Storage Account, Container Registry und eine Managed Identity mit Rollen als Fundament. Der Stand aus `solution/` bildet den Ausgangspunkt von Lab 02.
+Lab 02 («Infrastruktur als Code mit Terraform») rollt in Azure aus, was hier lokal läuft: Storage Account, Container Registry und eine Managed Identity mit Rollen als Fundament. Der Stand aus `solution/` bildet den Ausgangspunkt von Lab 02.
 
 ## Hinweise
 
@@ -610,7 +564,8 @@ Der Browser kann keinen Port auf den eigenen Rechner leiten. Dafür dient die Gi
 
 1. Den Azure Storage Explorer öffnen.
 2. In der linken Leiste die Ansicht **Explorer** öffnen (oberstes Symbol).
-3. Im Ressourcenbaum **Emulator & Attached → Storage Accounts** aufklappen. Der Baum enthält die Einträge **(Attached Containers)** und **(Emulator - Default Ports) (Key)**.4. Unter **(Emulator - Default Ports) (Key)** den Eintrag **Blob Containers** aufklappen.
+3. Im Ressourcenbaum **Emulator & Attached → Storage Accounts** aufklappen. Der Baum enthält die Einträge **(Attached Containers)** und **(Emulator - Default Ports) (Key)**.
+4. Unter **(Emulator - Default Ports) (Key)** den Eintrag **Blob Containers** aufklappen.
 
 Erwartetes Ergebnis: Der Container `dokumente` ist sichtbar. Ein Klick darauf zeigt seine Blobs. Enthält er noch keine Dateien, ist die Liste leer.
 
@@ -633,7 +588,7 @@ Liegt der weitergeleitete Port auf einer anderen Nummer als 10000 (Ansicht **Por
 2. Den Wert aus `docker-compose.yml` (Variable `Storage__ConnectionString`) einsetzen.
 3. Im `BlobEndpoint` `azurite:10000` durch `127.0.0.1:<lokale Portnummer>` ersetzen.
 
-Ein Schlüssel ist das Passwort eines Storage Accounts. Wer ihn kennt, hat vollen Zugriff auf alle Daten. Die Connection String von Azurite enthält einen solchen Schlüssel. Er ist öffentlich dokumentiert und für alle Azurite-Installationen gleich, deshalb ist er hier unbedenklich. Der echte Storage Account in Lab 02 und 03 hat keinen nutzbaren Schlüssel: Er lehnt Schlüssel ab. Der Zugriff erfolgt dort mit einem Azure-Konto, das die Rolle `Storage Blob Data Contributor` besitzt.
+Ein Schlüssel ist das Passwort eines Storage Accounts. Der Schlüssel gibt vollen Zugriff auf alle Daten. Der Connection String von Azurite enthält einen solchen Schlüssel. Er ist öffentlich dokumentiert und für alle Azurite-Installationen gleich, deshalb ist er hier unbedenklich. Der echte Storage Account in Lab 02 und 03 hat keinen nutzbaren Schlüssel: Er lehnt Schlüssel ab. Der Zugriff erfolgt dort mit einem Azure-Konto, das die Rolle `Storage Blob Data Contributor` besitzt.
 
 ### A.3 Nutzung
 
@@ -664,7 +619,7 @@ Voraussetzung: Die Verbindung steht (A.2) und die Anwendung läuft (Aufgabe 6).
 
 ### A.4 Was schiefgehen kann
 
-- Der Eintrag **(Emulator - Default Ports) (Key)** zeigt eine Fehlermeldung: Azurite läuft nicht. Im Terminal des Dev Containers `docker compose ps` (Container) oder das Terminal mit `npx azurite` (ohne Docker) prüfen (Aufgabe 2).
+- Der Eintrag **(Emulator - Default Ports) (Key)** zeigt eine Fehlermeldung: Azurite läuft nicht. Im Terminal des Dev Containers `docker compose ps` prüfen (Aufgabe 2).
 - Der Container `dokumente` fehlt: Die API legt ihn beim ersten Start an. Die API starten (Aufgabe 6) und im Storage Explorer **Refresh** wählen.
 - Der Storage Explorer zeigt andere Dateien als die Anwendung: Ein anderes Azurite ist verbunden, meist eines auf dem eigenen Rechner (lokales `docker compose` oder `npx azurite`). Dieses beenden (`docker compose down` im Terminal auf dem eigenen Rechner, im Ordner der Anwendung), die Weiterleitung neu starten und im Storage Explorer **Refresh** im Tab des Containers wählen.
 - Terminal auf dem eigenen Rechner, `gh codespace ports forward`: `you have no codespaces`. `gh` ist mit einem anderen GitHub-Konto angemeldet als dem, dem der Codespace gehört. `gh auth status` zeigt die Konten, `gh auth switch --user <Konto>` wechselt.

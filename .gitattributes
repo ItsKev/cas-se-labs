@@ -1,4 +1,4 @@
-# Normalize line endings to LF so scripts run unchanged in Codespaces, WSL and CI
+# Normalize line endings to LF so scripts run unchanged in Codespaces and WSL
 * text=auto eol=lf
 
 # Windows-only scripts keep CRLF

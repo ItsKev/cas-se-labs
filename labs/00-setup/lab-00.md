@@ -65,7 +65,7 @@ Das private Konto ergibt einen eigenen Mandanten (Tenant) mit der Rolle Owner. E
 - **Terraform:** legt Cloud-Ressourcen anhand von Code-Dateien an und entfernt sie wieder (Infrastructure as Code). Einführung: [Terraform](https://developer.hashicorp.com/terraform/intro), [Terraform auf Azure](https://learn.microsoft.com/azure/developer/terraform/overview).
 - **Deployment:** Anwendung oder Infrastruktur in der Cloud bereitstellen oder aktualisieren.
 - **Code-along:** Schritte der Demo auf dem eigenen Rechner gleichzeitig nachvollziehen.
-- **Demo-Modus:** Ein Lab ohne eigene Änderungen am Code durchgehen und der Demo folgen. Der Lösungsstand `solution/` ist dabei der Arbeitsordner. Beim selbstständigen Durcharbeiten (Übung) dient der Startstand `start/` als Ausgangspunkt.
+- **Demo-Modus:** Ein Lab ohne eigene Änderungen am Code durchgehen und der Demo folgen. Der Code ist dabei fertig. Welcher Ordner der Arbeitsordner ist, nennt jedes Lab zu Beginn, meist `solution/`. Beim selbstständigen Durcharbeiten (Übung) dient der Startstand `start/` als Ausgangspunkt.
 
 ---
 
@@ -163,7 +163,7 @@ Verwendung: Der Entwurf wird nicht bewertet. Im Einstieg von Modul 1 werden zwei
 
 Im Unterricht wird jeder Schritt in einer Demo gezeigt. Mitbauen ist direkt (Code-along) oder später mit den Anleitungen der Labs möglich.
 
-Jedes Lab hat einen Startstand (`start/`) für die Übung und einen Lösungsstand (`solution/`) für den Demo-Modus, damit der Einstieg bei jedem Lab möglich ist. Die Labs werden im Unterricht freigegeben.
+Jedes Lab ab Lab 01 hat einen Startstand (`start/`) für die Übung und einen Lösungsstand (`solution/`) mit dem fertigen Code, damit der Einstieg bei jedem Lab möglich ist.
 
 ---
 
@@ -242,7 +242,7 @@ Der Fork zeigt den Stand zum Zeitpunkt der Erzeugung. Labs, die später im Kurs-
 1. Eigene Änderungen committen und pushen.
 2. Auf GitHub die Hauptseite des eigenen Forks öffnen.
 3. Oberhalb der Dateiliste **Sync fork** wählen und **Update branch** bestätigen.
-4. Im Codespace oder Dev Container den neuen Stand holen:
+4. Im Terminal des Dev Containers den neuen Stand holen:
 
    ```bash
    git pull --no-rebase --no-edit
@@ -255,6 +255,7 @@ git remote add upstream https://github.com/marcoamhof/cas-se-labs.git   # nur be
 git fetch upstream
 git checkout upstream/main -- labs/01-storage
 git commit -m "Take over lab 01"
+git push
 ```
 
 - `labs/01-storage` steht für den Ordner des jeweiligen Labs.
@@ -285,6 +286,8 @@ Die Umgebung ist aufgebaut, und ein Terminal zeigt unter «== tool versions ==»
 Die Fehlerbilder je Variante stehen im jeweiligen Anhang.
 
 ## Werkzeuge prüfen
+
+Die Befehle dieses Labs laufen im Terminal des Dev Containers: **Terminal → New Terminal** (im Browser-Codespace über das Menüsymbol ☰ oben links). Erkennbar ist es am Tab `bash` rechts im Terminal-Bereich und an der Eingabeaufforderung mit dem Ordner unter `/workspaces/`, im Codespace etwa `@konto → /workspaces/cas-se-labs (main) $`. Zeigt die Eingabeaufforderung `PS`, ist eine PowerShell geöffnet: im Terminal-Bereich neben dem `+` den Pfeil öffnen und **bash** wählen. Ein Terminal auf dem eigenen Rechner, etwa Windows PowerShell mit `PS C:\...`, gehört nicht zum Dev Container. Dort fehlen die Werkzeuge.
 
 Das Skript prüft die Werkzeuge und startet zwei kleine Tests, einen Docker-Container und ein .NET-Programm. Beide haben mit der Aufgabe nichts zu tun, sie zeigen nur, dass die Werkzeugkette läuft.
 
@@ -317,15 +320,17 @@ Der Azure-Block darunter zeigt noch `[todo]`, die Anmeldung folgt im nächsten A
 
 **Was schiefgehen kann**
 
-- `[FAIL] docker`: Die Umgebung wurde ohne Docker-Daemon gestartet. **F1 → Rebuild Container** behebt das.
+- `[FAIL] docker`: Die Umgebung wurde ohne Docker-Daemon gestartet. **F1 → Codespaces: Rebuild Container** (Codespace) oder **F1 → Dev Containers: Rebuild Container** (lokaler Dev Container) behebt das.
 - `[FAIL] docker-run`: Das Netzwerk lässt den Download des Testimages nicht zu, etwa in einem Firmen- oder Hotel-WLAN oder hinter einem Proxy. Ein anderes Netz hilft. Im Codespace kommt das selten vor.
-- `[FAIL] dotnet-run` oder ein anderes Werkzeug: Der Aufbau war unvollständig. Meist hilft **Rebuild Container**, sonst eine Mail mit der Fehlerzeile.
+- `[FAIL] dotnet-run` oder ein anderes Werkzeug: Der Aufbau war unvollständig. Meist hilft derselbe Rebuild wie bei `[FAIL] docker`, sonst eine Mail mit der Fehlerzeile.
 
 ## Bei Azure anmelden
 
 Die Anmeldung legt nichts in Azure an. Sie legt für die Azure CLI und Terraform fest, mit welchem Konto und in welchem Abo sie später arbeiten, und ist vor dem ersten `terraform apply` im Unterricht nötig. Im Dev Container läuft sie am einfachsten über einen Gerätecode.
 
 **Ablauf**
+
+Ort: Terminal des Dev Containers, im Hauptordner `/workspaces/cas-se-labs`.
 
 ```bash
 az login --use-device-code
@@ -357,9 +362,10 @@ Weiterführend:
 
 ## Aufräumen
 
-- Nach jedem Modul wird alles entfernt, was angelegt wurde. Der Befehl dafür, `terraform destroy`, wird im Unterricht gezeigt. Fixkosten laufen bei Leerlauf weiter, bis die Ressourcen weg sind.
+- Labs, die Ressourcen in Azure anlegen (ab Lab 02), entfernen sie am Ende mit `terraform destroy`, beschrieben im Abschnitt «Aufräumen» des jeweiligen Labs. Fixkosten laufen bei Leerlauf weiter, bis die Ressourcen weg sind.
 - Codespace stoppen, wenn nicht gearbeitet wird: **F1 → Codespaces: Stop Current Codespace**. Ungenutzt stoppt er nach 30 Minuten von selbst und bleibt bestehen.
-- Nach Abschluss des Labs den Codespace löschen: github.com/codespaces → Menü des Codespace → **Delete**. Vor dem Löschen sind Änderungen zu committen und zu pushen, sonst gehen sie verloren. Gepushter Code bleibt im Fork.
+- GitHub löscht gestoppte Codespaces nach 30 Tagen ohne Nutzung (Standardeinstellung, Stand 06.11.2026). Zwischen Modul 1 und Modul 2 liegen 34 Tage. Änderungen sind deshalb nach jeder Sitzung zu committen und zu pushen. Fehlt der Codespace vor Modul 2, lässt sich aus dem Fork jederzeit ein neuer erzeugen (Anhang A).
+- Nach Abschluss von Modul 2 den Codespace löschen: github.com/codespaces → Menü des Codespace → **Delete**. Vor dem Löschen sind Änderungen zu committen und zu pushen, sonst gehen sie verloren. Gepushter Code bleibt im Fork.
 
 ## Definition of Done
 
@@ -409,7 +415,7 @@ VS Code läuft im Browser, der Explorer zeigt die Ordner `labs/` und `.devcontai
 
 **Was schiefgehen kann**
 
-- Der Aufbau bricht ab: **F1 → Codespaces: View Creation Log** zeigt die Ursache in der letzten Zeile. Oft genügt **F1 → Rebuild Container**.
+- Der Aufbau bricht ab: **F1 → Codespaces: View Creation Log** zeigt die Ursache in der letzten Zeile. Oft genügt **F1 → Codespaces: Rebuild Container**.
 - Meldung zum Kontingent: Persönliche Konten haben ein monatliches Gratis-Kontingent, einsehbar unter github.com/settings/billing. Stoppen des Codespace nach jeder Sitzung verringert den Verbrauch.
 - Der Browser blockiert Fenster oder Cookies von GitHub: Ausnahme für `github.com` und `github.dev` zulassen oder ein anderes Browserprofil verwenden.
 
@@ -419,8 +425,8 @@ Voraussetzungen: GitHub-Konto, Repo `<name>/cas-se-labs`, VS Code auf dem eigene
 
 **Ablauf**
 
-1. VS Code installieren (code.visualstudio.com). Windows: `winget install -e --id Microsoft.VisualStudioCode`. macOS: `brew install --cask visual-studio-code`.
-2. Die Erweiterung **GitHub Codespaces** installieren: Ansicht **Extensions** (Ctrl+Shift+X, auf dem Mac Cmd+Shift+X), nach «GitHub Codespaces» suchen, **Install** wählen. Alternativ im Terminal `code --install-extension GitHub.codespaces`.
+1. VS Code installieren (code.visualstudio.com). Die Befehle laufen im Terminal auf dem eigenen Rechner. Windows: `winget install -e --id Microsoft.VisualStudioCode`. macOS: `brew install --cask visual-studio-code`.
+2. Die Erweiterung **GitHub Codespaces** installieren: Ansicht **Extensions** (Ctrl+Shift+X, auf dem Mac Cmd+Shift+X), nach «GitHub Codespaces» suchen, **Install** wählen. Alternativ im Terminal auf dem eigenen Rechner `code --install-extension GitHub.codespaces`.
 3. Bei der ersten Verbindung meldet sich VS Code bei GitHub an. Die Anmeldung läuft über den Browser, VS Code führt durch den Ablauf.
 4. Codespace erzeugen: **F1 → Codespaces: Create New Codespace**, Repo `<name>/cas-se-labs` und Branch `main` wählen. Alternativ den Codespace wie in Anhang A im Browser erzeugen.
 5. Verbinden: **F1 → Codespaces: Connect to Codespace** und den Codespace wählen. Alternativ im Browser über das Menü des Codespace **Open in VS Code**.
@@ -438,6 +444,8 @@ VS Code läuft auf dem eigenen Gerät, links unten steht «Codespaces: …». Di
 ### Anhang C: Variante C, lokaler Dev Container
 
 Voraussetzungen: eine funktionierende Container-Engine (Docker Desktop oder Docker Engine, ohne sie startet der Dev Container nicht), einige GB freier Speicherplatz, Recht zum Installieren von Software, Docker-Lizenzbedingungen geprüft (Docker Desktop ist für grössere Firmen kostenpflichtig, die Firmenregeln gelten). Getestet ist der Aufbau des Dev Containers auf x86-64. Für Apple Silicon (arm64) bieten alle Bestandteile arm64-Fassungen: die Basis-Images (.NET, Azurite) und die Installation von Docker, Terraform, Azure CLI und Functions Core Tools. Ein vollständiger Aufbau auf einem Apple-Silicon-Mac wurde nicht durchgeführt.
+
+Alle Befehle in C.1 bis C.5 laufen im Terminal auf dem eigenen Rechner (Windows: PowerShell, macOS und Linux: Terminal), nicht im Dev Container.
 
 #### C.1 Windows
 
@@ -470,6 +478,8 @@ Voraussetzungen: eine funktionierende Container-Engine (Docker Desktop oder Dock
 4. VS Code erkennt `.devcontainer/devcontainer.json` und zeigt unten rechts den Hinweis «Folder contains a Dev Container configuration file. Reopen folder to develop in a container». **Reopen in Container** baut die Umgebung. Der erste Aufbau lädt mehrere hundert MB bis einige GB.
 5. Fehlt der Hinweis: **F1 → Dev Containers: Reopen in Container**.
 
+Der Hinweis erscheint nur lokal. Im Codespace ist die Umgebung bereits ein Dev Container. **Don't Show Again** blendet den Hinweis aus, der Befehl unter **F1** bleibt.
+
 #### C.5 Docker starten und prüfen (vor C.4)
 
 Vor dem Öffnen des Dev Containers muss der Docker-Daemon laufen. Die Prüfung gelingt in jedem Terminal auf dem eigenen Rechner:
@@ -490,7 +500,7 @@ Vor dem Öffnen des Dev Containers muss der Docker-Daemon laufen. Die Prüfung g
 
 Bleibt Docker Desktop auf «Starting» oder startet nicht: WSL 2 prüfen (`wsl --status`), Docker Desktop neu starten, den Rechner neu starten. Auf Firmenrechnern kann eine Richtlinie die Virtualisierung blockieren. Dann Variante A oder B verwenden.
 
-Der Hinweis erscheint nur lokal. Im Codespace ist die Umgebung bereits ein Dev Container. **Don't Show Again** blendet den Hinweis aus, der Befehl unter **F1** bleibt.
+#### Ergebnis von Anhang C
 
 **Erwartetes Ergebnis**
 
@@ -499,8 +509,8 @@ Links unten steht «Dev Container: cas-se cloud labs», das Terminal ist ein Lin
 **Was schiefgehen kann**
 
 - «Cannot connect to the Docker daemon» oder «failed to connect to the docker API»: Docker läuft nicht oder ist noch nicht fertig gestartet. Der Status muss «Running» bzw. «Engine running» lauten. Schrittfolge zum Starten und Prüfen in C.5.
-- Der Aufbau bricht ab: **F1 → Dev Containers: Show Container Log** zeigt die Ursache in der letzten Zeile. Oft genügt **F1 → Rebuild Container**.
+- Der Aufbau bricht ab: **F1 → Dev Containers: Show Container Log** zeigt die Ursache in der letzten Zeile. Oft genügt **F1 → Dev Containers: Rebuild Container**.
 - Der Aufbau ist unter Windows sehr langsam: Das Repo liegt vermutlich in OneDrive oder auf einem Netzlaufwerk. Ein Ordner wie `C:\dev\` behebt das.
 - Der Download der Images scheitert: Ein Firmen-Proxy oder eine Firewall blockiert den Zugriff auf die Registry. Ein anderes Netz oder Variante A im Browser verwenden.
 - Linux: «permission denied» bei Docker: Der Benutzer fehlt in der Gruppe `docker`, siehe C.3, danach neu anmelden.
-- Zu wenig Speicher auf der Festplatte: Alte Images mit `docker system prune` entfernen, nachdem geprüft ist, dass keine eigenen Container darunter fallen.
+- Zu wenig Speicher auf der Festplatte: Alte Images mit `docker system prune` im Terminal auf dem eigenen Rechner entfernen (im Dev Container wirkt der Befehl nur auf den Docker im Container), nachdem geprüft ist, dass keine eigenen Container darunter fallen.

@@ -146,7 +146,7 @@ docker images "$REGISTRY/api"
 
 ## Aufgabe 3: Image in die Registry laden
 
-Die Registry ist privat. Der Login mit der Azure CLI holt ein kurzlebiges Token auf Basis der Anmeldung bei Azure, der Registry-Admin bleibt abgeschaltet (Lab 02, N2). Das Image wird lokal gebaut und hochgeladen. `az acr build`, der Bau in der Cloud, steht mit dem Gratisguthaben eines Testabos nicht zur Verfügung: Microsoft pausiert dort die ACR-Task-Läufe, der Befehl endet mit `TasksOperationsNotAllowed`.
+Die Registry ist privat. Der Login mit der Azure CLI holt ein kurzlebiges Token auf Basis der Anmeldung bei Azure, der Registry-Admin bleibt abgeschaltet (Lab 02, N2). Das Image wird lokal gebaut und hochgeladen. `az acr build`, der Bau in der Cloud, steht mit dem Gratisguthaben eines Testabos nicht zur Verfügung (laut Microsoft Learn, Stand 05.11.2026): Microsoft pausiert dort die ACR-Task-Läufe, der Befehl endet mit `TasksOperationsNotAllowed`.
 
 **Ablauf**
 
@@ -189,7 +189,7 @@ cp ../../solution/infra/main.tf ../../solution/infra/variables.tf ../../solution
 terraform validate
 ```
 
-`terraform validate` prüft die kopierten Dateien und meldet «Success!». Weiter bei Aufgabe 5. Die Blöcke unten werden dann nur gelesen.
+`terraform validate` prüft die kopierten Dateien und meldet «Success!». `git status` zeigt die drei Dateien danach als geändert. Das ist die Folge des Kopierens. `git checkout -- .` im Ordner `start/infra` stellt den Ausgangsstand wieder her, sinnvoll erst nach dem Aufräumen. Weiter bei Aufgabe 5. Die Blöcke unten werden dann nur gelesen.
 
 Übung: Die Dateien `variables.tf`, `main.tf` und `outputs.tf` im Editor von VS Code öffnen und die Blöcke ans Ende setzen. Nach jeder Datei mit `Ctrl+S` speichern. Die Variable `image_tag` hat keinen Standardwert und wird bei `plan` und `apply` mit `-var` übergeben.
 
@@ -361,6 +361,15 @@ Alle Befehle: Terminal des Dev Containers, Ordner `labs/03-container/start/infra
 - `curl` liefert zuerst `404` oder bricht ab: Die Revision startet noch. Nach einigen Sekunden wiederholen.
 - Die Container App startet nicht (`ImagePullBackOff`, Status «Failed»): Das Image `api:v1` fehlt in der Registry (Aufgabe 3) oder die Rolle `AcrPull` ist noch nicht wirksam. Rollenzuweisungen brauchen einen Moment.
 - Die Weboberfläche zeigt «Liste konnte nicht geladen werden (500)»: Die Anwendung erreicht den Speicher nicht. Die Logs zeigen die Ursache (Aufgabe 6).
+- Das Portal zeigt im Storage Account unter **Storage browser** beim Container `dokumente` die Meldung «You do not have permissions to list the data using your user account with Microsoft Entra ID»: Das ist die erwartete Folge von N2 aus Lab 02. Der Storage Account erlaubt keine Schlüssel, das Portal meldet sich deshalb mit dem eigenen Konto an. Die Rolle Owner im Abo gilt für die Verwaltung der Ressourcen, nicht für die Daten darin. Die Datenrolle `Storage Blob Data Contributor` hat nur die Managed Identity der Anwendung. Zum Ansehen der Dateien erhält das eigene Konto die Rolle `Storage Blob Data Reader` auf dem Container. Ort: Terminal des Dev Containers, Ordner `labs/03-container/start/infra`. Der erste Befehl ermittelt die Id des eigenen Kontos und die Adresse des Containers, der zweite weist die Rolle zu:
+
+  ```bash
+  ME=$(az ad signed-in-user show --query id -o tsv)
+  SCOPE="$(az storage account show -n "$(terraform output -raw storage_account_name)" -g rg-docplatform --query id -o tsv)/blobServices/default/containers/dokumente"
+  az role assignment create --role "Storage Blob Data Reader" --assignee-object-id "$ME" --assignee-principal-type User --scope "$SCOPE"
+  ```
+
+  Nach ein bis wenigen Minuten zeigt **Refresh** im Portal die Blobs mit GUID als Namen. Die Rolle erlaubt nur Lesen. Die Zuweisung steht nicht im Terraform-Code und ist ein Eingriff von Hand.
 
 **Weiterführend**
 
@@ -385,7 +394,7 @@ Ort: Terminal des Dev Containers, Ordner `labs/03-container/start/infra`.
    az containerapp logs show --name ca-docplatform-api --resource-group rg-docplatform --tail 30
    ```
 
-2. Einen Fehlerfall auslösen und die Zeile suchen: eine Datei mit nicht erlaubter Endung hochladen (zum Beispiel `.txt`, in der Weboberfläche) und die Logs erneut abrufen.
+2. Einen Fehlerfall auslösen und die Zeile suchen: eine Datei mit nicht erlaubter Endung hochladen (zum Beispiel `.txt` per Drag & Drop auf die Upload-Fläche der Weboberfläche, der Dateidialog zeigt nur erlaubte Typen) und die Logs erneut abrufen.
 
 **Erwartetes Ergebnis**
 
@@ -410,7 +419,7 @@ Die nächste Anfrage trifft keinen laufenden Container. Azure muss zuerst das Im
 
 **Ablauf**
 
-Ort: Terminal des Dev Containers, Ordner `labs/03-container/start/infra`. Ein Replika ist eine laufende Kopie des Containers.
+Ort: Terminal des Dev Containers, Ordner `labs/03-container/start/infra`.
 
 1. Replikate anzeigen:
 
@@ -430,7 +439,7 @@ Ort: Terminal des Dev Containers, Ordner `labs/03-container/start/infra`. Ein Re
 
 **Erwartetes Ergebnis**
 
-Nach der Wartezeit zeigt die Replika-Liste keinen Eintrag. Der erste Aufruf braucht deutlich länger als der zweite, weil ein Container startet. In der Prüfung dieses Labs (Switzerland North) war die Liste nach gut acht Minuten leer, der erste Aufruf brauchte etwa 19 Sekunden, der zweite 0,06 Sekunden.
+Nach der Wartezeit zeigt die Replika-Liste keinen Eintrag. Der erste Aufruf braucht deutlich länger als der zweite, weil ein Container startet. In der Prüfung dieses Labs (Switzerland North, 05.11.2026) war die Liste nach gut acht Minuten leer, der erste Aufruf brauchte etwa 19 Sekunden, der zweite 0,06 Sekunden.
 
 **Was schiefgehen kann**
 

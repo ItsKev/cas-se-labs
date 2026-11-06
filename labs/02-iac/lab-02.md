@@ -74,7 +74,7 @@ Nicht im Scope: gemeinsamer Remote-State, Netzwerk-Isolation, eigene Domain, Ska
 
 | Voraussetzung | Prüfung |
 |---|---|
-| Lab 00 abgeschlossen, Azure-Anmeldung eingerichtet | `bash labs/00-setup/check.sh` meldet im Azure-Block `[ok]` |
+| Lab 00 abgeschlossen, Azure-Anmeldung eingerichtet | `bash /workspaces/cas-se-labs/labs/00-setup/check.sh` im Terminal des Dev Containers meldet im Azure-Block `[ok]` |
 | Lab 02 im eigenen Repo vorhanden | Ordner `labs/02-iac` besteht, sonst **Sync fork** (Lab 00, «Spätere Labs übernehmen») |
 | Azure-Abo mit Rolle Owner | `az account show` nennt das Abo |
 
@@ -84,7 +84,7 @@ Ohne Azure-Abo lassen sich Aufgabe 1, `terraform init` aus Aufgabe 2 und die Auf
 
 Der Ordner `labs/02-iac` enthält zwei Stände.
 
-- `start/` ist die Anwendung aus Lab 01 (`api/`, `docker-compose.yml`) mit einem Terraform-Ordner `infra/`. Darin sind `versions.tf` und `variables.tf` fertig, `main.tf` ist leer.
+- `start/` ist die Anwendung aus Lab 01 (`api/`, `docker-compose.yml`) mit einem Terraform-Ordner `infra/`. Darin sind `versions.tf` und `variables.tf` fertig, `main.tf` enthält nur Kommentare mit der Reihenfolge der Aufgaben.
 - `solution/` ist die fertige Referenz mit dem vollständigen `infra/` des Fundaments. Im Demo-Modus, also beim Mitverfolgen der Demo ohne eigene Änderungen am Code, wird `solution/` gestartet.
 
 Selbstständig wird in `start/infra` gearbeitet, im Demo-Modus in `solution/infra`.
@@ -135,7 +135,7 @@ Die Dateien in `start/infra` öffnen:
 
 - `versions.tf`: nötige Terraform- und Provider-Versionen, Konfiguration des Azure-Providers
 - `variables.tf`: Eingaben `location` und `name`, jeweils mit Standardwert
-- `main.tf`: die Ressourcen, zunächst leer
+- `main.tf`: die Ressourcen, zunächst nur Kommentare
 - `outputs.tf`: Ausgaben, entsteht in Aufgabe 6
 
 In `versions.tf` steht `storage_use_azuread = true`. Der Storage Account erlaubt später keine Shared Keys. Ohne diese Einstellung greift der Provider mit einem Schlüssel auf den Speicher zu und scheitert (siehe Aufgabe 6).
@@ -181,7 +181,7 @@ terraform init
 **Was schiefgehen kann**
 
 - `az login` meldet «No subscriptions found»: Das Konto hat kein aktives Abo (Lab 00, «Bei Azure anmelden»).
-- `terraform init` meldet «subscription ID could not be determined»: `ARM_SUBSCRIPTION_ID` fehlt in diesem Terminal. Die Variable gilt nur im Terminal, in dem sie gesetzt wurde.
+- `terraform plan` (Aufgabe 6) meldet «subscription ID could not be determined»: `ARM_SUBSCRIPTION_ID` fehlt in diesem Terminal. `terraform init` braucht die Variable noch nicht. Die Variable gilt nur im Terminal, in dem sie gesetzt wurde.
 - `az provider register --wait` dauert länger: Bei einem neuen Abo kann die Registrierung einige Minuten brauchen. Ohne die Registrierung scheitert der Apply später mit `MissingSubscriptionRegistration`.
 
 **Weiterführend**
@@ -481,7 +481,7 @@ Die Ausgabe ist leer.
 ## Definition of Done
 
 - [ ] `main.tf` enthält alle Ressourcen aus den Aufgaben 3 bis 5, `terraform validate` meldet «Success!».
-- [ ] F3: `terraform apply` hat 8 Ressourcen angelegt, `az resource list` zeigt sie.
+- [ ] F3: `terraform apply` hat 8 Ressourcen angelegt («Apply complete! Resources: 8 added.»), `az resource list` zeigt Storage Account, Container Registry und Managed Identity.
 - [ ] F2: Ein erneuter `terraform plan` meldet «No changes».
 - [ ] N2: Im Code steht kein Schlüssel, kein Passwort und kein Connection String.
 - [ ] F4, N4: `terraform destroy` ist erfolgt, die Resource Group `rg-docplatform` besteht nicht mehr.
