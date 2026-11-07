@@ -26,7 +26,7 @@ Ziel: Eine Webseite nimmt Dateien entgegen, legt sie dauerhaft ab und zeigt die 
 
 ## Einordnung im Ablauf
 
-Modul 1 baut in vier Stationen eine Dokumentenplattform. Lab 00 hat Aufgabe und Entwicklungsumgebung geklärt. Ab Lab 01 entsteht die Plattform. Dieses Lab ist die erste Station.
+Modul 1 baut in vier Schritten eine Dokumentenplattform. Lab 00 hat Aufgabe und Entwicklungsumgebung geklärt. Ab Lab 01 entsteht die Plattform. Dieses Lab ist der erste Schritt.
 
 ![Der rote Faden von Modul 1](assets/roter-faden.svg)
 

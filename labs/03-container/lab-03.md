@@ -14,7 +14,7 @@ Dieses Lab bringt die Anwendung aus Lab 01 in die Cloud: Image bauen, in die Reg
 
 ## Einordnung im Ablauf
 
-Modul 1 baut in vier Stationen eine Dokumentenplattform. Dieses Lab ist die dritte Station.
+Modul 1 baut in vier Schritten eine Dokumentenplattform. Dieses Lab ist der dritte Schritt.
 
 ![Der rote Faden von Modul 1](assets/roter-faden.svg)
 

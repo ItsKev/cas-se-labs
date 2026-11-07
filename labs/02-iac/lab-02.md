@@ -14,7 +14,7 @@ Dieses Lab legt das Fundament der Plattform in Azure als Code an: Speicher, Regi
 
 ## Einordnung im Ablauf
 
-Modul 1 baut in vier Stationen eine Dokumentenplattform. Dieses Lab ist die zweite Station.
+Modul 1 baut in vier Schritten eine Dokumentenplattform. Dieses Lab ist der zweite Schritt.
 
 ![Der rote Faden von Modul 1](assets/roter-faden.svg)
 

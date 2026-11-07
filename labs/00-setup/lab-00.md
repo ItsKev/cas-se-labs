@@ -157,7 +157,7 @@ Format:
 
 Umfang: Nicht alle Fragen müssen beantwortet sein, wenige Komponenten und offene Fragen genügen. Mit mehr Erfahrung kommen Varianten mit Abwägungen dazu: Kosten, Betrieb, Abhängigkeit vom Anbieter, Skalierung, Fehlerbehandlung.
 
-Verwendung: Der Entwurf wird nicht bewertet. Im Einstieg von Modul 1 werden zwei bis drei Entwürfe kurz gezeigt, am Ende von Modul 2 folgt der Vergleich mit der umgesetzten Lösung. Eine Abgabe ist nicht nötig. Für die Besprechung im Einstieg genügt es, den Entwurf zur Hand zu haben.
+Verwendung: Im Einstieg von Modul 1 werden zwei bis drei Entwürfe kurz gezeigt, am Ende von Modul 2 folgt der Vergleich mit der umgesetzten Lösung. Eine Abgabe ist nicht nötig. Für die Besprechung im Einstieg genügt es, den Entwurf zur Hand zu haben.
 
 ## Die beiden Unterrichtstage
 
