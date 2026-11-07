@@ -75,8 +75,40 @@ app.MapPost("/api/documents", async (HttpRequest request, BlobContainerClient co
     // 3. Use a new GUID as blob name. Store the original file name only as metadata (key MetaFileName, URL-encoded).
     // 4. Upload the stream with the content type from allowedTypes.
     // 5. Answer 201 with { id, fileName, status = "hochgeladen" }.
-    await Task.CompletedTask;
-    return Results.StatusCode(StatusCodes.Status501NotImplemented);
+    IFormFile? file;
+    try
+    {
+        if (!request.HasFormContentType)
+            return Results.BadRequest(new { error = "Keine Datei übermittelt." });
+        file = (await request.ReadFormAsync(ct)).Files.FirstOrDefault();
+    }
+    catch (Exception e) when (e is InvalidDataException or BadHttpRequestException)
+    {
+        return Results.BadRequest(new { error = "Datei ist grösser als 10 MB." });
+    }
+
+    if (file is null || file.Length == 0)
+        return Results.BadRequest(new { error = "Keine Datei übermittelt." });
+    if (file.Length > MaxFileSize)
+        return Results.BadRequest(new { error = "Datei ist grösser als 10 MB." });
+
+    var extension = Path.GetExtension(file.FileName);
+    if (!allowedTypes.TryGetValue(extension, out var contentType))
+        return Results.BadRequest(new { error = "Erlaubt sind PDF, DOCX, JPG und PNG." });
+
+    var id = Guid.NewGuid().ToString();
+    var blob = container.GetBlobClient(id);
+    await using var stream = file.OpenReadStream();
+    await blob.UploadAsync(stream, new BlobUploadOptions
+    {
+        HttpHeaders = new BlobHttpHeaders { ContentType = contentType },
+        Metadata = new Dictionary<string, string>
+        {
+            [MetaFileName] = Uri.EscapeDataString(Path.GetFileName(file.FileName)),
+        },
+    }, ct);
+
+    return Results.Created($"/api/documents/{id}/content", new { id, fileName = file.FileName, status = "hochgeladen" });
 }).DisableAntiforgery();
 
 // F2: list all documents
@@ -85,8 +117,19 @@ app.MapGet("/api/documents", async (BlobContainerClient container, CancellationT
     // TODO F2
     // List the blobs of the container including their metadata (BlobTraits.Metadata).
     // Map every blob to a DocumentInfo (original name from the metadata, newest first) and answer 200.
-    await Task.CompletedTask;
-    return Results.StatusCode(StatusCodes.Status501NotImplemented);
+    var items = new List<DocumentInfo>();
+    await foreach (var item in container.GetBlobsAsync(BlobTraits.Metadata, cancellationToken: ct))
+    {
+        item.Metadata.TryGetValue(MetaFileName, out var encoded);
+        items.Add(new DocumentInfo(
+            item.Name,
+            encoded is null ? item.Name : Uri.UnescapeDataString(encoded),
+            item.Properties.ContentType,
+            item.Properties.ContentLength ?? 0,
+            item.Properties.CreatedOn,
+            "hochgeladen"));
+    }
+    return Results.Ok(items.OrderByDescending(i => i.UploadedAt));
 });
 
 // F3: download a file
@@ -95,8 +138,16 @@ app.MapGet("/api/documents/{id:guid}/content", async (Guid id, BlobContainerClie
     // TODO F3
     // Answer 404 if the blob does not exist. Otherwise stream it back with its content type
     // and the original file name from the metadata (Results.File).
-    await Task.CompletedTask;
-    return Results.StatusCode(StatusCodes.Status501NotImplemented);
+    var blob = container.GetBlobClient(id.ToString());
+    if (!await blob.ExistsAsync(ct))
+        return Results.NotFound();
+
+    var props = (await blob.GetPropertiesAsync(cancellationToken: ct)).Value;
+    props.Metadata.TryGetValue(MetaFileName, out var encoded);
+    var fileName = encoded is null ? id.ToString() : Uri.UnescapeDataString(encoded);
+
+    var stream = await blob.OpenReadAsync(cancellationToken: ct);
+    return Results.File(stream, props.ContentType, fileName);
 });
 
 app.Run();
